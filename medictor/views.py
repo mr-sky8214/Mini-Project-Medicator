@@ -13,6 +13,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 from sklearn.metrics import precision_score,recall_score,f1_score
 from django.contrib import  auth
 from sklearn.ensemble import RandomForestClassifier
+from django.contrib.staticfiles.storage import staticfiles_storage
 import pandas as pd
 import numpy as np
 import random
@@ -228,7 +229,9 @@ def diseasepred(request):
         l2.append(0)
 
     # TRAINING DATA df -------------------------------------------------------------------------------------
-    df = pd.read_csv("assets/dataset/training_data.csv")
+    p = staticfiles_storage.path('dataset/training_data.csv')
+    df = pd.read_csv(p)
+    # df = pd.read_csv("assets/dataset/training_data.csv")
     print(df.columns)
 
     df.replace(
@@ -256,7 +259,9 @@ def diseasepred(request):
     # print(y)
 
     # TESTING DATA tr --------------------------------------------------------------------------------
-    tr = pd.read_csv("assets/dataset/test_data.csv")
+    p = staticfiles_storage.path('dataset/test_data.csv')
+    tr = pd.read_csv(p)
+    # tr = pd.read_csv("assets/dataset/test_data.csv")
     tr.replace(
         {'prognosis': {'Fungal infection': 0, 'Allergy': 1, 'GERD': 2, 'Chronic cholestasis': 3, 'Drug Reaction': 4,
                        'Peptic ulcer diseae': 5, 'AIDS': 6, 'Diabetes ': 7, 'Gastroenteritis': 8, 'Bronchial Asthma': 9,
