@@ -228,7 +228,7 @@ def diseasepred(request):
         l2.append(0)
 
     # TRAINING DATA df -------------------------------------------------------------------------------------
-    df = pd.read_csv("static/dataset/training_data.csv")
+    df = pd.read_csv("assets/dataset/training_data.csv")
     print(df.columns)
 
     df.replace(
@@ -256,7 +256,7 @@ def diseasepred(request):
     # print(y)
 
     # TESTING DATA tr --------------------------------------------------------------------------------
-    tr = pd.read_csv("static/dataset/test_data.csv")
+    tr = pd.read_csv("assets/dataset/test_data.csv")
     tr.replace(
         {'prognosis': {'Fungal infection': 0, 'Allergy': 1, 'GERD': 2, 'Chronic cholestasis': 3, 'Drug Reaction': 4,
                        'Peptic ulcer diseae': 5, 'AIDS': 6, 'Diabetes ': 7, 'Gastroenteritis': 8, 'Bronchial Asthma': 9,
