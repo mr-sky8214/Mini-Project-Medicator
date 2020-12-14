@@ -26,5 +26,8 @@ urlpatterns = [
     path('sign_in_patient/',views.sign_in_patient,name='sign_in_patient'),
     path('diseasepred/',views.diseasepred,name="diseasepred"),
     path('logout_patient/',views.logout_patient,name="logout_patient"),
-    path('input_symptoms/',views.input_symptoms,name="input_symptoms")
+    path('input_symptoms/',views.input_symptoms,name="input_symptoms"),
+    path('sign_up_doctor/',views.sign_up_doctor,name='sign_up_doctor'),
+    path('user_profile_doctor/',views.user_profile_doctor,name='user_profile_doctor'),
+    path('sign_in_doctor/',views.sign_in_doctor,name='sign_in_doctor'),
 ]
