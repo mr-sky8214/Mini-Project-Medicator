@@ -30,4 +30,6 @@ urlpatterns = [
     path('sign_up_doctor/',views.sign_up_doctor,name='sign_up_doctor'),
     path('user_profile_doctor/',views.user_profile_doctor,name='user_profile_doctor'),
     path('sign_in_doctor/',views.sign_in_doctor,name='sign_in_doctor'),
+    path('consult_doctor/',views.consult_doctor,name='consult_doctor'),
+    path('req_appoint/',views.req_appoint,name='req_appoint'),
 ]

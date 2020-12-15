@@ -229,8 +229,57 @@ def logout_patient(request):
     auth.logout(request)
     return render(request,"home/index.html")
 
+def req_appoint(request):
+    try:
+        idtoken = request.session['uid']
+        a = authen.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        docuid = request.POST.get("docuid")
+        print(docuid)
+        patuid = a
+
+        fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
+        params={}
+        params["fname"]= fname
+        params["docuid"] = docuid
+        params["patuid"] = patuid
+        return render(request,"patient/req_appoint.html",params)
+    except KeyError:
+        return render(request, "patient/signin.html", {"mess": 'Session ended'})
 
 
+def consult_doctor(request):
+    try:
+        idtoken = request.session['uid']
+        a = authen.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
+
+        doctype = request.POST.get("doctype")
+        params = {"doctype":doctype}
+        params["fname"]= fname
+        doc_list = database.child("users").child("doctortype").child(doctype).child("uids").get().val()
+        # print(doc_list)
+        # print("docList",doc_list,len(doc_list),doc_list[0])
+        li = []
+
+        for i in doc_list:
+            doc_dict = {}
+            doc_dict["fname"] = database.child("users").child("doctor").child(str(i)).child("details").child("fnmae").get().val()
+            doc_dict["email"] = database.child("users").child("doctor").child(str(i)).child("details").child("email").get().val()
+            doc_dict["phone"] = database.child("users").child("doctor").child(str(i)).child("details").child("phone").get().val()
+            doc_dict["uid"] = str(i)
+            li.append(doc_dict)
+
+        params["li"] = li
+        params["len"] = len(li)
+        return  render(request,"patient/consultdoctor.html",params)
+    except KeyError:
+        return render(request, "patient/signin.html", {"mess": 'Session ended'})
 
 
 def diseasepred(request):

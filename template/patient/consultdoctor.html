@@ -47,29 +47,19 @@
     <link rel="stylesheet" href="{% static 'patient/css/animate.min.css' %}" />
     <link rel="stylesheet" href="{% static 'patient/css/owl.carousel.css' %}" />
     <link rel="stylesheet" href="{% static 'patient/css/main.css' %}" />
-    <link rel="stylesheet" href="{% static 'patient/css/body1.css' %}" />
-    <link rel="stylesheet" href="{% static 'patient/css/disease.css' %}" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <style>
     body {
-      /* background: #010615; */
-      background: #0f2027; /* fallback for old browsers */
+      background: #abbaab; /* fallback for old browsers */
       background: -webkit-linear-gradient(
         to right,
-        #2c5364,
-        #203a43,
-        #0f2027
+        #ffffff,
+        #abbaab
       ); /* Chrome 10-25, Safari 5.1-6 */
       background: linear-gradient(
         to right,
-        #2c5364,
-        #203a43,
-        #0f2027
+        #ffffff,
+        #abbaab
       ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
   </style>
@@ -139,91 +129,36 @@
       </div>
     </header>
     <!-- #header -->
-
-    <!--Body starts here  -->
-
     <section class="post-area section-gap">
       <div class="container">
-        <div class="row">
-          <div class="box">
-            <div class="glass"></div>
-            <div class="content">
-              <h2 style="color: #fff">DECISION TREE</h2>
-              <p
-                style="color: #fff;font-size: 25px;font-family: font-family: 'Poppins', sans-serif;"
-              >
-                Predicted Disease : {{cfpd}}<br />
-                <!--    Confidence score by CF: {{cfcs}}<br>-->
-                <!--    Conf mat by CF: {{cfcm}}<br>-->
-                Confidence Score : {{cfas}}<br />
-                <!-- Cross score : {{cfscore}}<br /><br /> -->
-              </p>
-            </div>
-          </div>
-
-          <div class="box">
-            <div class="glass"></div>
-            <div class="content" style="color: #fff">
-              <h2 style="color: #fff">RANDOM FOREST</h2>
-              <p style="color: #fff;font-size: 25px;font-family: font-family: 'Poppins', sans-serif;"
-			  >
-                Predicted Disease : {{rfpd}}<br />
-                <!--    Confidence score by RF: {{rfcs}}<br>-->
-                <!--    Conf mat by RF: {{rfcm}}<br>-->
-                Confidence Score : {{rfas}}<br />
-                <!-- Cross score : {{rfscore}}<br /><br /> -->
-              </p>
-            </div>
-          </div>
-
-          <div class="box">
-            <div class="glass"></div>
-            <div class="content" style="color: #fff">
-              <h2 style="color: #fff">NAIVE BAYES</h2>
-              <p style="color: #fff;font-size: 25px;font-family: font-family: 'Poppins', sans-serif;"
-              >
-                Predicted Disease : {{nfpd}}<br />
-                <!--    Confidence score by NF: {{nfcs}}<br>-->
-                <!--    Conf mat by NF: {{nfcm}}<br>-->
-                Confidence Score : {{nfas}}<br />
-                <!-- Cross score : {{nfscore}}<br /><br /> -->
-              </p>
-            </div>
-          </div>
-		</div>
-		<div class="box" style="width: 94%;height: 90px;">
-            <div class="glass"></div>
-            <div class="content" style="color: #fff">
-			  <p style="color: #fff;font-size: 20px;font-family: font-family: 'Poppins', sans-serif;">Most probable predicted disease: <span style="color: #38ef7d;">{{nfpd}}</span></p>
-			  <p style="color: #fff;font-size: 20px;font-family: font-family: 'Poppins', sans-serif;">Click here to Know more about <a style="color: #38ef7d;font-size: 20px;font-family: font-family: 'Poppins', sans-serif;" href="https://www.google.com/search?q={{nfpd}}" target="_blank" id="search" onclick="gsearch()">{{nfpd}}</a></p>
-			  
-            </div>
-          </div>
-	  
-	  <div class="box" style="width: 94%;height: 90px;">
-		<div class="glass"></div>
-		<div class="content" style="color: #fff">
-		  <!-- <p style="color: #fff;font-size: 20px;font-family: font-family: 'Poppins', sans-serif;"> <a href="{%url 'consult_doctor'%}" style="color: #38ef7d;font-size: 20px;font-family: font-family: 'Poppins', sans-serif;" >Click here to consult a {{consultdoctor}}</a></p> -->
-		  <form action="{%url 'consult_doctor'%}" method="POST">
-        <button type="submit" name="doctype" value="{{consultdoctor}}" style="color: #fff;font-size: 20px;font-family: font-family: 'Poppins', sans-serif;">click here to Consult a {{consultdoctor}}</button>
-        {% csrf_token %} 
-      </form>
-		</div>
-	  </div>
-  </div>
-</div>
-	  <!-- <div class="box" style="width: 94%;height: 90px;">
-		<div class="glass"></div>
-		<div class="content" style="color: #fff">
-		  
-		  <p style="color: #fff;font-size: 20px;font-family: font-family: 'Poppins', sans-serif;">Consult a <span>{{consultdoctor}}</span></p>
-		</div>
-	  </div> -->
-  </div>
+        <h1 style="font-family:Poppins;color:violet;font-size: 40px;" align="center"> Consult a doctor</h1>
+        <h3 > Here is list of {{doctype}}s</h3><br><br>
+        <table>
+            <th>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Phone</td>
+                <td>Consult</td>
+            </th>
+            
+            {% for i in li %}
+                <tr>
+                    <td></td>
+                    <td>{{i.fname}}</td>
+                    <td>{{i.email}}</td>
+                    <td>{{i.phone}}</td>
+                    <td>
+                        <form action="{% url 'req_appoint' %}" method="POST">
+                            {% csrf_token %} 
+                            <button type="submit" name="docuid" value="{{i.uid}}">take appointment</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        
+      </div>
     </section>
-
-    <!-- Body ends -->
-
     <script src="{% static 'patient/js/vendor/jquery-2.2.4.min.js' %}"></script>
     <script
       src="{% static 'patient/https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' %}"
@@ -242,12 +177,6 @@
     <script src="{% static 'patient/js/jquery.nice-select.min.js' %}"></script>
     <script src="{% static 'patient/js/parallax.min.js' %}"></script>
     <script src="{% static 'patient/js/mail-script.js' %}"></script>
-	<script src="{% static 'patient/js/main.js' %}"></script>
-	<script>
-		function gsearch()
-		{
-			document.getElementById("search").innerHTML = "<a href='https://www.google.com/search?q="+"{{nfpd}}"+"' target='_blank'";
-		}
-	</script>
+    <script src="{% static 'patient/js/main.js' %}"></script>
   </body>
 </html>
