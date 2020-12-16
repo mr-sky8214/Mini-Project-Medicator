@@ -33,4 +33,6 @@ urlpatterns = [
     path('consult_doctor/',views.consult_doctor,name='consult_doctor'),
     path('req_appoint/',views.req_appoint,name='req_appoint'),
     path('pat_request/',views.pat_request,name='pat_request'),
+    path('req_accept/',views.req_accept,name='req_accept'),
+    path('req_reject/',views.req_reject,name='req_reject'),
 ]

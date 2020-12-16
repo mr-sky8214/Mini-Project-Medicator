@@ -103,64 +103,26 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			  </header><!-- #header -->
 
 
-              <section class="post-area section-gap">
-                <div class="container">
-                  <h1 style="font-family:Poppins;color:violet;font-size: 40px;" align="center"> Consult a doctor</h1>
-                  <h3 > Here is list of patients</h3><br><br>
-                  <table>
-                      <th>
-                          <td>First Name</td>
-                          <td>Last Name</td>
-                          <td>Symptoms</td>
-                          <td>Predicted disease</td>
-                          <td>Confidence Score</td>
-                          <td>Status</td>
-                          <td>Accept</td>
-                          <td>Reject</td>
-                      </th>
-                      
-                      {% for i in pat_list %}
-                          <tr>
-                              <td></td>
-                              <td>{{i.fname}}</td>
-                              <td>{{i.lname}}</td>
-                              <!-- <td>{{i.phone}}</td>
-                              <td>
-                                  <form action="{% url 'req_appoint' %}" method="POST">
-                                      {% csrf_token %} 
-                                      <button type="submit" name="docuid" value="{{i.uid}}">take appointment</button>
-                                  </form>
-                              </td> -->
-                              <td>
-                                  <ul>
-                              {% for s in i.pat_symp %}
-                                <li>
-                                    {{s}}
-                                </li>
-                              {% endfor %}
-                            </ul>
-                            </td>
-                            <td>{{i.pd}}</td>
-                            <td>{{i.cs}}</td>
-                            <td>{{i.status}}</td>
-                            <td>
-                                <form action="{% url 'req_accept' %}" method="POST">
-                                    {% csrf_token %} 
-                                    <button type="submit" name="patuid" value="{{i.pat_uid}}">Accept</button>
-                                </form>
-                            </td> 
-                            <td>
-                                <form action="{% url 'req_reject' %}" method="POST">
-                                    {% csrf_token %} 
-                                    <button type="submit" name="patuid" value="{{i.pat_uid}}">Reject</button>
-                                </form>
-                            </td> 
-                          </tr>
-                      {% endfor %}
-                  </table>
-                  
-                </div>
-              </section>
+			<!-- start banner Area -->
+
+			<!-- End banner Area -->
+
+			<!-- Start post Area -->
+			<section class="post-area section-gap">
+				<div class="container">
+					<h1>Request Accepted</h1>
+				</div>
+			</section>
+			<!-- End post Area -->
+
+			<!-- start Subscribe Area -->
+
+            <!-- End Subscribe Area -->
+
+			<!-- start footer Area -->
+
+			
+
 			<script src="{% static 'patient/js/vendor/jquery-2.2.4.min.js' %}"></script>
 			<script src="{% static 'patient/https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' %}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 			<script src="{% static 'patient/js/vendor/bootstrap.min.js' %}"></script>
