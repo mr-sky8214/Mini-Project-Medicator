@@ -161,69 +161,116 @@ def sign_in_doctor(request):
 def user_profile_patient(request):
     email = request.POST.get("email")
     passw = request.POST.get("pass")
-    try:
-        user = authen.sign_in_with_email_and_password(email, passw)
-    except:
-        return render(request,"patient/signin.html",{"mess":'Invalid Credentials'})
+    if email is not None:
+        try:
+            user = authen.sign_in_with_email_and_password(email, passw)
+            session_id = user['idToken']
+            request.session['uid'] = str(session_id)
+        except:
+            return render(request,"patient/signin.html",{"mess":'Invalid Credentials'})
 
     # print(user['idToken'])
-    session_id = user['idToken']
-    request.session['uid'] = str(session_id)
-    idtoken = request.session['uid']
-    a = authen.get_account_info(idtoken)
-    a = a['users']
-    a = a[0]
-    a = a['localId']
-    pid = database.child("users").child("patient").child(a).get().val()
-    if pid is None:
-        return render(request, "patient/signin.html", {"mess": 'Invalid Credentials'})
-    # print(a)
-    fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
-    lname = database.child("users").child("patient").child(a).child("details").child("lname").get().val()
-    email = database.child("users").child("patient").child(a).child("details").child("email").get().val()
-    dob = database.child("users").child("patient").child(a).child("details").child("dob").get().val()
-    phone = database.child("users").child("patient").child(a).child("details").child("phone").get().val()
+    try:
+        idtoken = request.session['uid']
+        a = authen.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        pid = database.child("users").child("patient").child(a).get().val()
+        if pid is None:
+            return render(request, "patient/signin.html", {"mess": 'Invalid Credentials'})
+        # print(a)
+        fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
+        lname = database.child("users").child("patient").child(a).child("details").child("lname").get().val()
+        email = database.child("users").child("patient").child(a).child("details").child("email").get().val()
+        dob = database.child("users").child("patient").child(a).child("details").child("dob").get().val()
+        phone = database.child("users").child("patient").child(a).child("details").child("phone").get().val()
+        note = database.child("users").child("patient").child(a).child("notification").child("status").get().val()
 
 
 
-    # print(last_login)
-    # name = fname + " " + lname
-    params = {"email":email,"fname":fname,"lname":lname,"email":email,"dob":dob,"phone":phone}
-    # print(data)
-    return  render(request,"patient/user_profile.html",params)
+        # print(last_login)
+        # name = fname + " " + lname
+        params = {"email":email,"fname":fname,"lname":lname,"email":email,"dob":dob,"phone":phone,"note":note}
+        # print(data)
+        return  render(request,"patient/user_profile.html",params)
+    except KeyError:
+        return render(request, "patient/signin.html", {"mess": 'Session ended'})
+
 
 def user_profile_doctor(request):
     email = request.POST.get("email")
     passw = request.POST.get("pass")
-    try:
-        user = authen.sign_in_with_email_and_password(email, passw)
-    except:
-        return render(request, "doctor/signin.html", {"mess": 'Invalid Credentials'})
+    if email is not None:
+        try:
+            user = authen.sign_in_with_email_and_password(email, passw)
+            session_id = user['idToken']
+            request.session['uid'] = str(session_id)
+        except:
+            return render(request, "doctor/signin.html", {"mess": 'Invalid Credentials'})
 
     # print(user['idToken'])
-    session_id = user['idToken']
-    request.session['uid'] = str(session_id)
-    idtoken = request.session['uid']
-    a = authen.get_account_info(idtoken)
-    a = a['users']
-    a = a[0]
-    a = a['localId']
-    pid = database.child("users").child("doctor").child(a).get().val()
-    if pid is None:
-        return render(request, "doctor/signin.html", {"mess": 'Invalid Credentials'})
-    # print(a)
-    fname = database.child("users").child("doctor").child(a).child("details").child("fnmae").get().val()
-    lname = database.child("users").child("doctor").child(a).child("details").child("lname").get().val()
-    email = database.child("users").child("doctor").child(a).child("details").child("email").get().val()
-    dob = database.child("users").child("doctor").child(a).child("details").child("dob").get().val()
-    phone = database.child("users").child("doctor").child(a).child("details").child("phone").get().val()
-    doctype = database.child("users").child("doctor").child(a).child("details").child("doctype").get().val()
+    try:
+        idtoken = request.session['uid']
+        a = authen.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        pid = database.child("users").child("doctor").child(a).get().val()
+        if pid is None:
+            return render(request, "doctor/signin.html", {"mess": 'Invalid Credentials'})
+        # print(a)
+        fname = database.child("users").child("doctor").child(a).child("details").child("fnmae").get().val()
+        lname = database.child("users").child("doctor").child(a).child("details").child("lname").get().val()
+        email = database.child("users").child("doctor").child(a).child("details").child("email").get().val()
+        dob = database.child("users").child("doctor").child(a).child("details").child("dob").get().val()
+        phone = database.child("users").child("doctor").child(a).child("details").child("phone").get().val()
+        doctype = database.child("users").child("doctor").child(a).child("details").child("doctype").get().val()
+        li = database.child("users").child("doctor").child(a).child("notification").get().val()
+        if li is not None:
+            l = len(li)
+        else:
+            l = 0
+        params = {"email": email, "fname": fname, "lname": lname, "email": email, "dob": dob, "phone": phone,"doctype": doctype, "tot_pat": l}
 
-    # print(last_login)
-    # name = fname + " " + lname
-    params = {"email": email, "fname": fname, "lname": lname, "email": email, "dob": dob, "phone": phone,"doctype":doctype}
-    # print(data)
-    return render(request, "doctor/user_profile.html", params)
+        # print(data)
+        return render(request, "doctor/user_profile.html", params)
+    except KeyError:
+        return render(request, "doctor/signin.html", {"mess": 'Session ended'})
+
+def pat_request(request):
+    try:
+        idtoken = request.session['uid']
+        a = authen.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        params = {}
+        fname = database.child("users").child("doctor").child(a).child("details").child("fnmae").get().val()
+        li = database.child("users").child("doctor").child(a).child("notification").get().val()
+        if li is not None:
+            l = len(li)
+        else:
+            l = 0
+        params['fname'] = fname
+        params["tot_pat"] = l
+        params['pat_li'] = li
+        pat_list = []
+        if li is not None:
+            for i in li:
+                emp_dict = {"fname":"","lname":""}
+                patuid = i["patuid"]
+                emp_dict["fname"] =  database.child("users").child("patient").child(patuid).child("details").child("fnmae").get().val()
+                emp_dict["lname"] =  database.child("users").child("patient").child(patuid).child("details").child("lname").get().val()
+                emp_dict["pat_symp"] = i['pat_his']['symptoms']
+                emp_dict["pd"] = i['pat_his']['pred_dis']
+                emp_dict["cs"] = i['pat_his']['conf_score']
+
+                pat_list.append(emp_dict)
+        params["pat_list"] = pat_list
+        return render(request,"doctor/pat_request.html",params)
+    except:
+        return render(request, "doctor/signin.html", {"mess": 'Session ended'})
 
 def logout_patient(request):
     auth.logout(request)
@@ -240,6 +287,21 @@ def req_appoint(request):
         print(docuid)
         patuid = a
 
+        li = []
+        if database.child("users").child("doctor").child(docuid).child("notification").get().val() is None:
+            pat_his = database.child("users").child("patient").child(patuid).child("history").get().val()
+            doc_dict = {"patuid": patuid, "status": "pending","pat_his":pat_his}
+            li.append(doc_dict)
+            database.child("users").child("doctor").child(docuid).child("notification").set(li)
+        else:
+            li = database.child("users").child("doctor").child(docuid).child("notification").get().val()
+            pat_his = database.child("users").child("patient").child(patuid).child("history").get().val()
+            doc_dict = {"patuid": patuid, "status": "pending","pat_his":pat_his}
+            li.append(doc_dict)
+            database.child("users").child("doctor").child(docuid).child("notification").set(li)
+
+        pat_dict = {"status":"pending"}
+        database.child("users").child("patient").child(a).child("notification").set(pat_dict)
         fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
         params={}
         params["fname"]= fname
@@ -291,6 +353,7 @@ def diseasepred(request):
         a = a['users']
         a = a[0]
         a = a['localId']
+        patuid = a
         fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
 
 
@@ -300,10 +363,24 @@ def diseasepred(request):
         s3 = request.POST["s3"]
         s4 = request.POST["s4"]
         s5 = request.POST["s5"]
+        psymptoms = []
+        if len(s1) is not 0:
+            psymptoms.append(s1)
 
+        if len(s2) is not 0:
+            psymptoms.append(s2)
+
+        if len(s3) is not 0:
+            psymptoms.append(s3)
+
+        if len(s4) is not 0:
+            psymptoms.append(s4)
+
+        if len(s5) is not 0:
+            psymptoms.append(s5)
 
         params = {}
-        psymptoms = [s1,s2,s3,s4,s5]
+        # psymptoms = [s1,s2,s3,s4,s5]
         l1 = ['itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills', 'joint_pain',
               'stomach_pain', 'acidity', 'ulcers_on_tongue', 'muscle_wasting', 'vomiting', 'burning_micturition',
               'spotting_ urination',
@@ -682,7 +759,7 @@ def diseasepred(request):
             consultdoctor = "Neurologist"
 
         elif params['nbpd'] in Allergist_Immunologist:
-            consultdoctor = "Allergist/Immunologist"
+            consultdoctor = "Allergist_Immunologist"
 
         elif params['nbpd'] in Urologist:
             consultdoctor = "Urologist"
@@ -697,6 +774,9 @@ def diseasepred(request):
             consultdoctor = "other"
 
         params["consultdoctor"] = consultdoctor
+
+        pat_his = {"symptoms":psymptoms,"pred_dis":params['nbpd'],"conf_score":params['nbas']}
+        database.child("users").child("patient").child(patuid).child("history").set(pat_his)
         return render(request, 'patient/diseasepred.html', params)
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})

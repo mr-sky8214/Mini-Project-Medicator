@@ -1,9 +1,12 @@
 {% load static %}
-<!-- {% if "{{image}}" is not "None" %}
+{% if note == 'pending' %}
 <script>
-	document.getElementById("DP").innerHTML.src = "{{image}";
+	document.getElementById("note").textContent = '1';
+	document.getElementById("msg").textContent = '0';
+	console.log("status accept");
 </script>
-{% endif%} -->
+
+{% endif %}
 	
 	<!DOCTYPE html>
 	<html lang="en">
@@ -76,17 +79,18 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 												<i class="fa fa-angle-down"></i></span>
 											</a>
 											<ul class="profile">
-												
+												<li><a href="{% url 'user_profile_patient'%}">User Profile</a></li>
+
 												<li><a href="{% url 'logout_patient' %}">Sign Out</a></li>
 											</ul>
 										</li>
 									</ul>
 									<ul class="notification_icons">
 										<li>
-											<a href="#"><i class="fa fa-bell-o"></i><span class="number">11</span></a>
+											<a href="#"><i class="fa fa-bell-o"></i><span class="number" id="note"></span></a>
 										</li>
 										<li>
-											<a href="#"><i class="fa fa-envelope-o"></i><span class="number">5</span></a>
+											<a href="#"><i class="fa fa-envelope-o"></i><span class="number" id="msg"></span></a>
 										</li>
 										<!-- <li>
 											<a href="#">
@@ -277,7 +281,26 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			<script src="{% static 'patient/js/parallax.min.js' %}"></script>		
 			<script src="{% static 'patient/js/mail-script.js' %}"></script>	
 			<script src="{% static 'patient/js/main.js' %}"></script>	
-			
+			<script>
+				var str1 = '{{note}}';
+				var str2 = 'pending';
+				if(str1 == 'pending')
+				{
+					document.getElementById("note").textContent = '1';
+					document.getElementById("msg").textContent = '0';
+				}
+				else if(str1 == 'accept')
+				{
+					document.getElementById("note").textContent = '0';
+					document.getElementById("msg").textContent = '1';
+				}
+				else
+				{
+					document.getElementById("note").textContent = '0';
+					document.getElementById("msg").textContent = '0';
+				}
+				
+			</script>
 		</body>
 	</html>
 

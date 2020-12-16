@@ -63,9 +63,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 							<div class="col-md-5 col-xs-12">
 								<div class="header-top-right text-right">
 									<ul class="account">
-										<li>
-											<a href="{% url 'input_symptoms'%}">Check Disease</a>
-										</li>
+										
 										<li>
 											<a href="{% url 'logout_patient' %}">Sign Out</a>
 										</li>
@@ -76,6 +74,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 												<i class="fa fa-angle-down"></i></span>
 											</a>
 											<ul class="profile">
+												<li><a href="{% url 'user_profile_doctor'%}">User Profile</a></li>
 
 												<li><a href="{% url 'logout_patient' %}">Sign Out</a></li>
 											</ul>
@@ -83,10 +82,10 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 									</ul>
 									<ul class="notification_icons">
 										<li>
-											<a href="#"><i class="fa fa-bell-o"></i><span class="number">11</span></a>
+											<a href="{% url 'pat_request'%}"><i class="fa fa-bell-o"></i><span class="number" id="note"></span></a>
 										</li>
 										<li>
-											<a href="#"><i class="fa fa-envelope-o"></i><span class="number">5</span></a>
+											<a href="#"><i class="fa fa-envelope-o"></i><span class="number" id="msg"></span></a>
 										</li>
 										<!-- <li>
 											<a href="#">
@@ -131,7 +130,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 
 								<ul class="cat-list">
 									<!-- <li><a class="justify-content-between d-flex text_active" href="user_profile.html"><p style="font-size: 20px;"><i class="fa fa-user-o pr-2"></i>  Check Disease</p></a></li> -->
-									<li><a class="justify-content-between d-flex" href="upload_items.html"><p><i class="fa fa-file-word-o pr-2"></i>  History</p></a></li>
+									<li><a class="justify-content-between d-flex" href="#"><p><i class="fa fa-file-word-o pr-2"></i>  History</p></a></li>
 									</ul>
 							</div>
 
@@ -146,7 +145,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 
 										<div class="col-md-6 col-sm-12">
 											<div class="submit-field">
-												<h4>Patient Name: {{fname}} &nbsp {{lname}}</h4>
+												<h4>Doctor Name: {{fname}} &nbsp {{lname}}</h4>
 												<!-- <input class="form-control" type="text" placeholder="Account Name"> -->
 											</div>
 										</div>
@@ -284,7 +283,10 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			<script src="{% static 'patient/js/parallax.min.js' %}"></script>
 			<script src="{% static 'patient/js/mail-script.js' %}"></script>
 			<script src="{% static 'patient/js/main.js' %}"></script>
-
+			<script>
+				document.getElementById("note").textContent = '{{tot_pat}}';
+				document.getElementById("msg").textContent = '0';
+			</script>
 		</body>
 	</html>
 

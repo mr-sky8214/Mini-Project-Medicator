@@ -1,9 +1,5 @@
 {% load static %}
-<!-- {% if "{{image}}" is not "None" %}
-<script>
-	document.getElementById("DP").innerHTML.src = "{{image}";
-</script>
-{% endif%} -->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -99,6 +95,8 @@
                       {{fname}} <span> <i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul class="profile">
+                      <li><a href="{% url 'user_profile_patient'%}">User Profile</a></li>
+
                       <li><a href="{% url 'logout_patient' %}">Sign Out</a></li>
                     </ul>
                   </li>
@@ -107,13 +105,13 @@
                   <li>
                     <a href="#"
                       ><i class="fa fa-bell-o"></i
-                      ><span class="number">11</span></a
+                      ><span class="number" id="note"></span></a
                     >
                   </li>
                   <li>
                     <a href="#"
                       ><i class="fa fa-envelope-o"></i
-                      ><span class="number">5</span></a
+                      ><span class="number" id="msg"></span></a
                     >
                   </li>
                   <!-- <li>

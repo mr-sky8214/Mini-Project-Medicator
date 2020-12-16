@@ -32,4 +32,5 @@ urlpatterns = [
     path('sign_in_doctor/',views.sign_in_doctor,name='sign_in_doctor'),
     path('consult_doctor/',views.consult_doctor,name='consult_doctor'),
     path('req_appoint/',views.req_appoint,name='req_appoint'),
+    path('pat_request/',views.pat_request,name='pat_request'),
 ]
