@@ -112,6 +112,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 				<div class="container">
 					<h1>Request Accepted</h1>
 				</div>
+				<div id="meet"></div>
 			</section>
 			<!-- End post Area -->
 
@@ -138,9 +139,24 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			<script src="{% static 'patient/js/parallax.min.js' %}"></script>
 			<script src="{% static 'patient/js/mail-script.js' %}"></script>
 			<script src="{% static 'patient/js/main.js' %}"></script>
+			<script src='https://meet.jit.si/external_api.js'></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 			<script>
 				document.getElementById("note").textContent = '{{tot_pat}}';
 				document.getElementById("msg").textContent = '{{msg_cnt}}';
+				$(document).ready(function(){
+			var domain = 'meet.jit.si';
+			var options = {
+			    roomName: 'medicator{{dob}}',
+			    width: 700,
+			    height: 700,
+			    parentNode: document.querySelector('#meet')
+			};
+			var api = new JitsiMeetExternalAPI(domain, options);
+
+		});
+			
 			</script>
 		</body>
 	</html>

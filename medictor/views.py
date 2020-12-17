@@ -300,17 +300,21 @@ def req_accept(request):
             l = len(li)
         else:
             l = 0
+        dob = ""
         for i in range(l):
             if li[i]["patuid"] == str(pat_uid):
                 li[i]["status"] = "accept"
                 accept_list = []
                 if database.child("users").child("doctor").child(a).child("accept").get().val() is None:
                     accept_list.append(li[i])
+                    dob = database.child("users").child("patient").child(li[i]['patuid']).child("details").child("dob").get().val()
                     database.child("users").child("doctor").child(a).child("accept").set(accept_list)
                     li.pop(i)
                 else:
                     accept_list = database.child("users").child("doctor").child(a).child("accept").get().val()
                     accept_list.append(li[i])
+                    dob = database.child("users").child("patient").child(li[i]['patuid']).child("details").child(
+                        "dob").get().val()
                     database.child("users").child("doctor").child(a).child("accept").set(accept_list)
                     li.pop(i)
                 print(accept_list)
@@ -320,6 +324,7 @@ def req_accept(request):
         params = {}
         params['fname'] = fname
         params["tot_pat"] = l
+        params["dob"] = dob
         cnt = 0
         if database.child("users").child("doctor").child(a).child("reject").get().val() is not None:
             cnt = cnt + len(database.child("users").child("doctor").child(a).child("reject").get().val())
