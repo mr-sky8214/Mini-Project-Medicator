@@ -14,6 +14,8 @@ from sklearn.metrics import precision_score,recall_score,f1_score
 from django.contrib import  auth
 from sklearn.ensemble import RandomForestClassifier
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.core.mail import send_mail
+from django.core.mail.backends import smtp
 import pandas as pd
 import numpy as np
 import random
@@ -308,6 +310,8 @@ def req_accept(request):
                 if database.child("users").child("doctor").child(a).child("accept").get().val() is None:
                     accept_list.append(li[i])
                     dob = database.child("users").child("patient").child(li[i]['patuid']).child("details").child("dob").get().val()
+                    patemail = database.child("users").child("patient").child(li[i]['patuid']).child("details").child("email").get().val()
+                    # send_mail('Request accepted',"Docotor has accepted your request. Please sign in or refresh page",'medicatorvs@gmail.com',[patemail])
                     database.child("users").child("doctor").child(a).child("accept").set(accept_list)
                     li.pop(i)
                 else:
@@ -315,6 +319,10 @@ def req_accept(request):
                     accept_list.append(li[i])
                     dob = database.child("users").child("patient").child(li[i]['patuid']).child("details").child(
                         "dob").get().val()
+                    patemail = database.child("users").child("patient").child(li[i]['patuid']).child("details").child(
+                        "email").get().val()
+                    # send_mail('Request accepted', "Docotor has accepted your request. Please sign in or refresh page",
+                    #           'medicatorvs@gmail.com', [patemail])
                     database.child("users").child("doctor").child(a).child("accept").set(accept_list)
                     li.pop(i)
                 print(accept_list)
@@ -331,8 +339,25 @@ def req_accept(request):
         if database.child("users").child("doctor").child(a).child("accept").get().val() is not None:
             cnt = cnt + len(
                 database.child("users").child("doctor").child(a).child("accept").get().val())
-
         params["msg_cnt"] = cnt
+        patname = database.child("users").child("patient").child(str(pat_uid)).child("details").child("fnmae").get().val()
+        patemail = database.child("users").child("patient").child(str(pat_uid)).child("details").child("email").get().val()
+        docname = database.child("users").child("doctor").child(a).child("details").child("fnmae").get().val()
+        docemail = database.child("users").child("doctor").child(a).child("details").child("email").get().val()
+
+
+
+        subject = 'Request accept'
+        message = f'Hi ,your request has been accepted by ' + docname + '.\n Please login or refresh page to join meet.'
+        email_from = 'medicatorvs@gmail.com'
+        recipient_list = [str(patemail), ]
+        send_mail(subject, message, email_from, recipient_list)
+
+        # subject = 'New patient request'
+        # message = f'Hi ,you have new request from ' + patname + '.\n Please login or refresh page to see request.'
+        # email_from = 'medicatorvs@gmail.com'
+        # recipient_list = [str(docemail), ]
+        # send_mail(subject, message, email_from, recipient_list)
         return render(request,"doctor/req_accept.html",params)
     except:
         return render(request, "doctor/signin.html", {"mess": 'Session ended'})
@@ -380,6 +405,19 @@ def req_reject(request):
                 database.child("users").child("doctor").child(a).child("accept").get().val())
 
         params["msg_cnt"] = cnt
+
+        patname = database.child("users").child("patient").child(str(pat_uid)).child("details").child(
+            "fnmae").get().val()
+        patemail = database.child("users").child("patient").child(str(pat_uid)).child("details").child(
+            "email").get().val()
+        docname = database.child("users").child("doctor").child(a).child("details").child("fnmae").get().val()
+        docemail = database.child("users").child("doctor").child(a).child("details").child("email").get().val()
+
+        subject = 'Request reject'
+        message = f'Hi ,your request has been rejected by ' + docname
+        email_from = 'medicatorvs@gmail.com'
+        recipient_list = [str(patemail), ]
+        send_mail(subject, message, email_from, recipient_list)
         return render(request, "doctor/req_reject.html", params)
     except:
         return render(request, "doctor/signin.html", {"mess": 'Session ended'})
@@ -397,7 +435,17 @@ def req_appoint(request):
         a = a[0]
         a = a['localId']
         docuid = request.POST.get("docuid")
-        print(docuid)
+        docemail = database.child("users").child("doctor").child(docuid).child("details").child("email").get().val()
+        patname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
+        # print(docemail)
+        # send_mail('New request','You have new reuest, please sign in or refresh page','medicatorvs@gmail.com',[str(docemail)],fail_silently=False)
+        # print(docuid)
+        subject = 'New patient request'
+        message = f'Hi ,you have new request from ' + patname + '.\n Please login or refresh page to see request.'
+        email_from = 'medicatorvs@gmail.com'
+        recipient_list = [str(docemail), ]
+        send_mail(subject, message, email_from, recipient_list)
+
         patuid = a
 
         li = []
