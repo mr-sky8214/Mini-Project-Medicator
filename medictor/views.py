@@ -232,7 +232,13 @@ def user_profile_doctor(request):
         else:
             l = 0
         params = {"email": email, "fname": fname, "lname": lname, "email": email, "dob": dob, "phone": phone,"doctype": doctype, "tot_pat": l}
+        cnt = 0
+        if database.child("users").child("doctor").child(a).child("reject").get().val() is not None:
+            cnt = cnt + len(database.child("users").child("doctor").child(a).child("reject").get().val())
+        if database.child("users").child("doctor").child(a).child("accept").get().val() is not None:
+            cnt = cnt + len(database.child("users").child("doctor").child(a).child("accept").get().val())
 
+        params["msg_cnt"] = cnt
         # print(data)
         return render(request, "doctor/user_profile.html", params)
     except KeyError:
@@ -269,6 +275,13 @@ def pat_request(request):
                 emp_dict["pat_uid"] = patuid
                 pat_list.append(emp_dict)
         params["pat_list"] = pat_list
+        cnt = 0
+        if database.child("users").child("doctor").child(a).child("reject").get().val() is not None:
+            cnt = cnt + len(database.child("users").child("doctor").child(a).child("reject").get().val())
+        if database.child("users").child("doctor").child(a).child("accept").get().val() is not None:
+            cnt = cnt + len(database.child("users").child("doctor").child(a).child("accept").get().val())
+
+        params["msg_cnt"] = cnt
         return render(request,"doctor/pat_request.html",params)
     except:
         return render(request, "doctor/signin.html", {"mess": 'Session ended'})
@@ -290,12 +303,31 @@ def req_accept(request):
         for i in range(l):
             if li[i]["patuid"] == str(pat_uid):
                 li[i]["status"] = "accept"
+                accept_list = []
+                if database.child("users").child("doctor").child(a).child("accept").get().val() is None:
+                    accept_list.append(li[i])
+                    database.child("users").child("doctor").child(a).child("accept").set(accept_list)
+                    li.pop(i)
+                else:
+                    accept_list = database.child("users").child("doctor").child(a).child("accept").get().val()
+                    accept_list.append(li[i])
+                    database.child("users").child("doctor").child(a).child("accept").set(accept_list)
+                    li.pop(i)
+                print(accept_list)
                 database.child("users").child("doctor").child(a).child("notification").set(li)
                 database.child("users").child("patient").child(str(pat_uid)).child("notification").set({"status":"accept"})
                 break
         params = {}
         params['fname'] = fname
         params["tot_pat"] = l
+        cnt = 0
+        if database.child("users").child("doctor").child(a).child("reject").get().val() is not None:
+            cnt = cnt + len(database.child("users").child("doctor").child(a).child("reject").get().val())
+        if database.child("users").child("doctor").child(a).child("accept").get().val() is not None:
+            cnt = cnt + len(
+                database.child("users").child("doctor").child(a).child("accept").get().val())
+
+        params["msg_cnt"] = cnt
         return render(request,"doctor/req_accept.html",params)
     except:
         return render(request, "doctor/signin.html", {"mess": 'Session ended'})
@@ -317,29 +349,35 @@ def req_reject(request):
         for i in range(l):
             if li[i]["patuid"] == str(pat_uid):
                 li[i]["status"] = "reject"
+                accept_list = []
+                if database.child("users").child("doctor").child(a).child("reject").get().val() is None:
+                    accept_list.append(li[i])
+                    database.child("users").child("doctor").child(a).child("reject").set(accept_list)
+                    li.pop(i)
+                else:
+                    accept_list = database.child("users").child("doctor").child(a).child("reject").get().val()
+                    accept_list.append(li[i])
+                    database.child("users").child("doctor").child(a).child("reject").set(accept_list)
+                    li.pop(i)
+                print(accept_list)
                 database.child("users").child("doctor").child(a).child("notification").set(li)
-                database.child("users").child("patient").child(str(pat_uid)).child("notification").set({"status":"reject"})
+                database.child("users").child("patient").child(str(pat_uid)).child("notification").set(
+                    {"status": "reject"})
                 break
-        # li = database.child("users").child("doctor").child(a).child("notification").get().val()
-        # print(li)
-        # if li is None:
-        #     l = 0
-        # else:
-        #     l = len(li)
-        # for i in range(l):
-        #     if pat_uid == l[i]["patuid"]:
-        #         # database.child("users").child("doctor").child(a).child("notification").child(i).update({"status":"reject"})
-        #         li[i]["status"] = "reject"
-        #         database.child("users").child("doctor").child(a).child("notification").set(li)
-        #         database.child("users").child("patient").child(pat_uid).child("notification").update({"status": "reject"})
-        #         break
         params = {}
         params['fname'] = fname
         params["tot_pat"] = l
-        return render(request,"doctor/req_reject.html",params)
+        cnt = 0
+        if database.child("users").child("doctor").child(a).child("reject").get().val() is not None:
+            cnt = cnt + len(database.child("users").child("doctor").child(a).child("reject").get().val())
+        if database.child("users").child("doctor").child(a).child("accept").get().val() is not None:
+            cnt = cnt + len(
+                database.child("users").child("doctor").child(a).child("accept").get().val())
+
+        params["msg_cnt"] = cnt
+        return render(request, "doctor/req_reject.html", params)
     except:
         return render(request, "doctor/signin.html", {"mess": 'Session ended'})
-
 
 
 def logout_patient(request):

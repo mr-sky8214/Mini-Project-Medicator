@@ -105,7 +105,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 
               <section class="post-area section-gap">
                 <div class="container">
-                  <h1 style="font-family:Poppins;color:violet;font-size: 40px;" align="center"> Consult a doctor</h1>
+                  <h1 style="font-family:Poppins;color:violet;font-size: 40px;" align="center"> Pending patient Requests </h1>
                   <h3 > Here is list of patients</h3><br><br>
                   <table>
                       <th>
@@ -133,12 +133,12 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
                               </td> -->
                               <td>
                                   <ul>
-                              {% for s in i.pat_symp %}
-                                <li>
-                                    {{s}}
-                                </li>
-                              {% endfor %}
-                            </ul>
+									{% for s in i.pat_symp %}
+										<li>
+											{{s}}
+										</li>
+									{% endfor %}
+                            	</ul>
                             </td>
                             <td>{{i.pd}}</td>
                             <td>{{i.cs}}</td>
@@ -178,7 +178,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			<script src="{% static 'patient/js/main.js' %}"></script>
 			<script>
 				document.getElementById("note").textContent = '{{tot_pat}}';
-				document.getElementById("msg").textContent = '0';
+				document.getElementById("msg").textContent = '{{msg_cnt}}';
 			</script>
 		</body>
 	</html>
