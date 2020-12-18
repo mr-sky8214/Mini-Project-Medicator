@@ -117,6 +117,12 @@ def sign_in_patient(request):
 
     if fname is None :
         return render(request, "patient/signin.html")
+    else:
+        subject = 'Account created'
+        message = f'Hi ,your medictor account as a patient has been successfully created'
+        email_from = 'medicatorvs@gmail.com'
+        recipient_list = [str(email), ]
+        send_mail(subject, message, email_from, recipient_list)
 
     data = {"fnmae" : fname,"lname": lname ,"email": email,"phone":phone, "dob": dob,"age":age}
     try:
@@ -140,6 +146,12 @@ def sign_in_doctor(request):
 
     if fname is None or email is None:
         return render(request, "doctor/signin.html")
+    else:
+        subject = 'Account created'
+        message = f'Hi ,your medictor account as a doctor has been successfully created'
+        email_from = 'medicatorvs@gmail.com'
+        recipient_list = [str(email), ]
+        send_mail(subject, message, email_from, recipient_list)
 
     data = {"fnmae" : fname,"lname": lname ,"email": email,"phone":phone, "dob": dob,"age":age,"doctype":doctype}
     try:
