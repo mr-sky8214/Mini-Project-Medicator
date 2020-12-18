@@ -269,6 +269,7 @@ def pat_request(request):
         li = database.child("users").child("doctor").child(a).child("notification").get().val()
         if li is not None:
             l = len(li)
+            print("length",l)
         else:
             l = 0
         params['fname'] = fname
@@ -276,6 +277,7 @@ def pat_request(request):
         params['pat_li'] = li
         pat_list = []
         if li is not None:
+            print("li is not none")
             for i in li:
                 emp_dict = {"fname":"","lname":""}
                 patuid = i["patuid"]
@@ -319,6 +321,12 @@ def req_accept(request):
         for i in range(l):
             if li[i]["patuid"] == str(pat_uid):
                 li[i]["status"] = "accept"
+                consult_history = database.child("users").child("patient").child(li[i]['patuid']).child("consult_history").get().val()
+                for c in range(len(consult_history)):
+                    if consult_history[c]['docuid'] == a:
+                        consult_history[c]['status'] = 'accept'
+                        break
+                database.child("users").child("patient").child(li[i]['patuid']).child("consult_history").set(consult_history)
                 accept_list = []
                 if database.child("users").child("doctor").child(a).child("accept").get().val() is None:
                     accept_list.append(li[i])
@@ -393,25 +401,35 @@ def req_reject(request):
         for i in range(l):
             if li[i]["patuid"] == str(pat_uid):
                 li[i]["status"] = "reject"
+                consult_history = database.child("users").child("patient").child(li[i]['patuid']).child(
+                    "consult_history").get().val()
+                for c in range(len(consult_history)):
+                    if consult_history[c]['docuid'] == a:
+                        consult_history[c]['status'] = 'reject'
+                        break
+                database.child("users").child("patient").child(li[i]['patuid']).child("consult_history").set(
+                    consult_history)
+
+                li.pop(i)
                 reject_list = []
-                if database.child("users").child("doctor").child(a).child("reject").get().val() is None:
-                    reject_list.append(li[i])
-                    dob = database.child("users").child("patient").child(li[i]['patuid']).child("details").child("dob").get().val()
-                    patemail = database.child("users").child("patient").child(li[i]['patuid']).child("details").child("email").get().val()
-                    # send_mail('Request rejected',"Docotor has rejected your request. Please sign in or refresh page",'medicatorvs@gmail.com',[patemail])
-                    database.child("users").child("doctor").child(a).child("reject").set(reject_list)
-                    li.pop(i)
-                else:
-                    reject_list = database.child("users").child("doctor").child(a).child("reject").get().val()
-                    reject_list.append(li[i])
-                    dob = database.child("users").child("patient").child(li[i]['patuid']).child("details").child(
-                        "dob").get().val()
-                    patemail = database.child("users").child("patient").child(li[i]['patuid']).child("details").child(
-                        "email").get().val()
-                    # send_mail('Request rejected', "Docotor has rejected your request. Please sign in or refresh page",
-                    #           'medicatorvs@gmail.com', [patemail])
-                    database.child("users").child("doctor").child(a).child("reject").set(reject_list)
-                    li.pop(i)
+                # if database.child("users").child("doctor").child(a).child("reject").get().val() is None:
+                #     reject_list.append(li[i])
+                #     dob = database.child("users").child("patient").child(li[i]['patuid']).child("details").child("dob").get().val()
+                #     patemail = database.child("users").child("patient").child(li[i]['patuid']).child("details").child("email").get().val()
+                #     # send_mail('Request rejected',"Docotor has rejected your request. Please sign in or refresh page",'medicatorvs@gmail.com',[patemail])
+                #     database.child("users").child("doctor").child(a).child("reject").set(reject_list)
+                #     li.pop(i)
+                # else:
+                #     reject_list = database.child("users").child("doctor").child(a).child("reject").get().val()
+                #     reject_list.append(li[i])
+                #     dob = database.child("users").child("patient").child(li[i]['patuid']).child("details").child(
+                #         "dob").get().val()
+                #     patemail = database.child("users").child("patient").child(li[i]['patuid']).child("details").child(
+                #         "email").get().val()
+                #     # send_mail('Request rejected', "Docotor has rejected your request. Please sign in or refresh page",
+                #     #           'medicatorvs@gmail.com', [patemail])
+                #     database.child("users").child("doctor").child(a).child("reject").set(reject_list)
+                #     li.pop(i)
                 print(reject_list)
                 database.child("users").child("doctor").child(a).child("notification").set(li)
                 database.child("users").child("patient").child(str(pat_uid)).child("notification").set({"status":"reject"})
@@ -435,7 +453,7 @@ def req_reject(request):
 
 
         subject = 'Request reject'
-        message = f'Hi ,your request has been rejected by ' + docname + '.\n Please login or refresh page to join meet.'
+        message = f'Hi ,your request has been rejected by ' + docname + '.\n Please login see status.'
         email_from = 'medicatorvs@gmail.com'
         recipient_list = [str(patemail), ]
         send_mail(subject, message, email_from, recipient_list)
@@ -474,6 +492,18 @@ def req_appoint(request):
 
         patuid = a
 
+        li = []
+        if database.child("users").child("patient").child(a).child("consult_history").get().val() is None:
+            pat_his = database.child("users").child("patient").child(a).child("history").get().val()
+            emp_dict = {'status':"pending",'docuid':docuid,'pat_his':pat_his}
+            li.append(emp_dict)
+            database.child("users").child("patient").child(a).child("consult_history").set(li)
+        else:
+            li = database.child("users").child("patient").child(a).child("consult_history").get().val()
+            pat_his = database.child("users").child("patient").child(a).child("history").get().val()
+            emp_dict = {'status': "pending", 'docuid': docuid, 'pat_his': pat_his}
+            li.append(emp_dict)
+            database.child("users").child("patient").child(a).child("consult_history").set(li)
         li = []
         if database.child("users").child("doctor").child(docuid).child("notification").get().val() is None:
             pat_his = database.child("users").child("patient").child(patuid).child("history").get().val()
