@@ -103,16 +103,23 @@
                 </ul>
                 <ul class="notification_icons">
                   <li>
-                    <a href="#"
-                      ><i class="fa fa-bell-o"></i
-                      ><span class="number" id="note"></span></a
-                    >
+                    <a href="#"><i class="fa fa-bell-o"></i><span class="number" id="note"></span></a>
+                    <ul class="profile">
+                      <li>
+                        <span id="notetext"></span>
+                      </li>
+                    </ul>
                   </li>
                   <li>
-                    <a href="#"
-                      ><i class="fa fa-envelope-o"></i
-                      ><span class="number" id="msg"></span></a
-                    >
+                    <a href="#"><i class="fa fa-envelope-o"></i><span class="number" id="msg"></span></a>
+                    <ul class="profile">
+                      <li>
+                        <span id="text"></span>
+                      </li>
+                      <li>
+                        <a href="#" id="link" target="_blank">Click here to meet doctor</a>
+                      </li>
+                    </ul>
                   </li>
                   <!-- <li>
 											<a href="#">
@@ -152,5 +159,35 @@
     <script src="{% static 'patient/js/parallax.min.js' %}"></script>
     <script src="{% static 'patient/js/mail-script.js' %}"></script>
     <script src="{% static 'patient/js/main.js' %}"></script>
+    <script>
+      var str1 = '{{note}}';
+      var str2 = 'pending';
+      if(str1 == 'pending')
+      {
+        document.getElementById("note").textContent = '1';
+        document.getElementById("notetext").textContent = "Your request is pending";
+        document.getElementById("msg").textContent = '0';
+        document.getElementById("text").textContent = "No activity";
+      }
+      else if(str1 == 'reject')
+      {
+        document.getElementById("note").textContent = '0';
+        document.getElementById("notetext").textContent = "No activity";
+        document.getElementById("msg").textContent = '1';
+        document.getElementById("text").textContent = "Your request has been "+str1+"ed";
+        // document.getElementById("msg").innerHTML="<ul><li> Your request has been "+str1+"ed <li><ul>";
+      }
+      else if(str1 == 'accept')
+      {
+        document.getElementById("note").textContent = '0';
+        document.getElementById("notetext").textContent = "No activity";
+        document.getElementById("msg").textContent = '1';
+        document.getElementById("text").textContent = "Your request has been "+str1+"ed";
+        document.getElementById("link").href = "https://meet.jit.si/medicator{{dob}}"
+        
+        // document.getElementById("msg").innerHTML="<ul><li> Your request has been "+str1+"ed <li><ul>";
+      }
+      
+    </script>
   </body>
 </html>

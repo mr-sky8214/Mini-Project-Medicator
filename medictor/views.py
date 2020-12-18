@@ -99,6 +99,8 @@ def input_symptoms(request):
         a = a['localId']
         fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
         l = {"symptoms": pz, "length": len(pz),"fname" : fname}
+        note = database.child("users").child("patient").child(a).child("notification").child("status").get().val()
+        l['note'] = note
         # print(last_login)
         # name = fname + " " + lname
         # params = {"email": email, "fname": fname, "lname": lname, "email": email, "dob": dob, "phone": phone,"symptoms": pz}
@@ -481,6 +483,7 @@ def req_appoint(request):
         docuid = request.POST.get("docuid")
         docemail = database.child("users").child("doctor").child(docuid).child("details").child("email").get().val()
         patname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
+        note = database.child("users").child("patient").child(a).child("notification").child("status").get().val()
         # print(docemail)
         # send_mail('New request','You have new reuest, please sign in or refresh page','medicatorvs@gmail.com',[str(docemail)],fail_silently=False)
         # print(docuid)
@@ -537,6 +540,7 @@ def req_appoint(request):
         params["fname"]= fname
         params["docuid"] = docuid
         params["patuid"] = patuid
+        params['note'] = note
         return render(request,"patient/req_appoint.html",params)
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
@@ -550,7 +554,7 @@ def consult_doctor(request):
         a = a[0]
         a = a['localId']
         fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
-
+        note = database.child("users").child("patient").child(a).child("notification").child("status").get().val()
         doctype = request.POST.get("doctype")
         params = {"doctype":doctype}
         params["fname"]= fname
@@ -569,6 +573,7 @@ def consult_doctor(request):
 
         params["li"] = li
         params["len"] = len(li)
+        params['note'] = note
         return  render(request,"patient/consultdoctor.html",params)
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
@@ -1004,7 +1009,8 @@ def diseasepred(request):
             consultdoctor = "other"
 
         params["consultdoctor"] = consultdoctor
-
+        note = database.child("users").child("patient").child(a).child("notification").child("status").get().val()
+        params['note'] = note
         pat_his = {"symptoms":psymptoms,"pred_dis":params['nbpd'],"conf_score":params['nbas']}
         database.child("users").child("patient").child(patuid).child("history").set(pat_his)
         return render(request, 'patient/diseasepred.html', params)
