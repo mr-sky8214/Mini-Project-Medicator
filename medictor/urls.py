@@ -36,4 +36,5 @@ urlpatterns = [
     path('req_accept/',views.req_accept,name='req_accept'),
     path('req_reject/',views.req_reject,name='req_reject'),
     path('pat_history/',views.pat_history,name='pat_history'),
+    path('doc_history/',views.doc_history,name='doc_history'),
 ]

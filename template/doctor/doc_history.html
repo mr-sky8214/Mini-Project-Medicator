@@ -1,10 +1,13 @@
 {% load static %}
-<!-- {% if "{{image}}" is not "None" %}
+{% if note == 'pending' %}
 <script>
-	document.getElementById("DP").innerHTML.src = "{{image}";
+	document.getElementById("note").textContent = '1';
+	document.getElementById("msg").textContent = '0';
+	console.log("status accept");
 </script>
-{% endif%} -->
 
+{% endif %}
+	
 	<!DOCTYPE html>
 	<html lang="en">
 	<head>
@@ -23,7 +26,7 @@
 		<!-- Site Title -->
 		<title>User Profile - Exponus Buy & Sell Market Place</title>
 
-		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
 			<!--
 			CSS
 			============================================= -->
@@ -31,7 +34,7 @@
 			<link rel="stylesheet" href="{% static 'patient/css/font-awesome.min.css' %}">
 			<link rel="stylesheet" href="{% static 'patient/css/bootstrap.css' %}">
 			<link rel="stylesheet" href="{% static 'patient/css/magnific-popup.css' %}">
-			<link rel="stylesheet" href="{% static 'patient/css/nice-select.css' %}">
+			<link rel="stylesheet" href="{% static 'patient/css/nice-select.css' %}">					
 			<link rel="stylesheet" href="{% static 'patient/css/animate.min.css' %}">
 			<link rel="stylesheet" href="{% static 'patient/css/owl.carousel.css' %}">
 			<link rel="stylesheet" href="{% static 'patient/css/main.css' %}">
@@ -66,7 +69,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 										
 										<li>
 											<a href="{% url 'logout_patient' %}">Sign Out</a>
-										</li>
+										</li>	
 										<li>
 											<a href="#">
 												<!-- <img src="{% static 'patient/img/cart.png' %}" alt=""> -->
@@ -87,63 +90,90 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 										<li>
 											<a href="{% url 'doc_history' %}"><i class="fa fa-envelope-o"></i><span class="number" id="msg"></span></a>
 										</li>
-
 									</ul>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
+			    
 			  </header><!-- #header -->
 
 
 			<!-- start banner Area -->
 
-			<!-- End banner Area -->
-
+			<!-- End banner Area -->	
+			
 			<!-- Start post Area -->
 			<section class="post-area section-gap">
 				<div class="container">
-					<h1>Request Accepted</h1>
-					<a href="#" target="_blank" id="link">Click here to meet patient</a>
-				</div>
-				
+					<table>
+                        <tr>
+                            <th>Patient name</th>
+                            <th>Symptoms</th>
+                            <th>Predicted Disease</th>
+                            <th>Confidence Score</th>
+                            <th>Status</th>
+                        </tr>
+                        {% for i in li%}
+                            <tr>
+                                <td>{{i.patname}}</td>
+                                <td>
+                                <ul>
+                                    {% for z in i.symptoms %}
+                                        <li>{{z}}</li>
+                                    {% endfor %}
+                                </ul>
+                                </td>
+                                <td>{{i.pd}}</td>
+                                <td>{{i.cs}}</td>
+                                <td>{{i.status}}</td>
+
+                            </tr>
+                        {% endfor %}
+                    </table>
+				</div>	
 			</section>
 			<!-- End post Area -->
 
 			<!-- start Subscribe Area -->
+            
+            <!-- End Subscribe Area --> 
 
-            <!-- End Subscribe Area -->
-
-			<!-- start footer Area -->
-
+			<!-- start footer Area -->		
 			
+			<div class="copyright1">
+				<div class="container">
+					<div class="row"> 
+						<div class="col-md-6 col-12">
+							<div class="bottom_footer_info">
+								<p> &copy; Copyright 2020. All rights reserved</p>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<!-- End footer Area --> 		
 
 			<script src="{% static 'patient/js/vendor/jquery-2.2.4.min.js' %}"></script>
 			<script src="{% static 'patient/https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' %}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-			<script src="{% static 'patient/js/vendor/bootstrap.min.js' %}"></script>
+			<script src="{% static 'patient/js/vendor/bootstrap.min.js' %}"></script>			
 			<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
-  			<script src="{% static 'patient/js/easing.min.js' %}"></script>
+  			<script src="{% static 'patient/js/easing.min.js' %}"></script>			
 			<script src="{% static 'patient/js/hoverIntent.js' %}"></script>
-			<script src="{% static 'patient/js/superfish.min.js' %}"></script>
+			<script src="{% static 'patient/js/superfish.min.js' %}"></script>	
 			<script src="{% static 'patient/js/jquery.ajaxchimp.min.js' %}"></script>
-			<script src="{% static 'patient/js/jquery.magnific-popup.min.js' %}"></script>
-			<script src="{% static 'patient/js/owl.carousel.min.js' %}"></script>
+			<script src="{% static 'patient/js/jquery.magnific-popup.min.js' %}"></script>	
+			<script src="{% static 'patient/js/owl.carousel.min.js' %}"></script>			
 			<script src="{% static 'patient/js/jquery.sticky.js' %}"></script>
-			<script src="{% static 'patient/js/jquery.nice-select.min.js' %}"></script>
-			<script src="{% static 'patient/js/parallax.min.js' %}"></script>
-			<script src="{% static 'patient/js/mail-script.js' %}"></script>
+			<script src="{% static 'patient/js/jquery.nice-select.min.js' %}"></script>			
+			<script src="{% static 'patient/js/parallax.min.js' %}"></script>		
+			<script src="{% static 'patient/js/mail-script.js' %}"></script>	
 			<script src="{% static 'patient/js/main.js' %}"></script>
-			<script src='https://meet.jit.si/external_api.js'></script>
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-			<script>
-				document.getElementById("note").textContent = '{{tot_pat}}';
-				document.getElementById("msg").textContent = '{{msg_cnt}}';
-				document.getElementById("link").href = "https://meet.jit.si/medicator{{dob}}"
-					
-			</script>
+			<script src="{% static 'push.min.js' %}"></script>
+			<script src="{% static 'serviceWorker.min.js' %}"></script>	
+			
 		</body>
 	</html>
 

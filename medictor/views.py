@@ -618,6 +618,36 @@ def pat_history(request):
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
 
+def doc_history(request):
+    try:
+        idtoken = request.session['uid']
+        a = authen.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        fname = database.child("users").child("doctor").child(a).child("details").child("fnmae").get().val()
+        accept = database.child("users").child("doctor").child(a).child("accept").get().val()
+
+        li = []
+        if accept is not None:
+            for i in accept:
+                his = {}
+                his['patname'] = database.child("users").child("patient").child(i["patuid"]).child("details").child("fnmae").get().val()
+                his['symptoms'] = i["pat_his"]["symptoms"]
+                his['pd'] = i["pat_his"]["pred_dis"]
+                his['cs'] = i["pat_his"]["conf_score"]
+                his['status'] = i['status']
+                his["patuid"] = i['patuid']
+                li.append(his)
+
+        params = {}
+        params["fname"]= fname
+        print("li",li)
+        params['li'] = li
+        return  render(request,"doctor/doc_history.html",params)
+    except KeyError:
+        return render(request, "doctor/signin.html", {"mess": 'Session ended'})
+
 def diseasepred(request):
 
     # return HttpResponse("Hi")

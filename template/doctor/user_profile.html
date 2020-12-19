@@ -85,13 +85,8 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 											<a href="{% url 'pat_request'%}"><i class="fa fa-bell-o"></i><span class="number" id="note"></span></a>
 										</li>
 										<li>
-											<a href="#"><i class="fa fa-envelope-o"></i><span class="number" id="msg"></span></a>
+											<a href="{% url 'doc_history' %}"><i class="fa fa-envelope-o"></i><span class="number" id="msg"></span></a>
 										</li>
-										<!-- <li>
-											<a href="#">
-												<i class="fa fa-shopping-basket"></i>
-											</a>
-										</li>  -->
 
 									</ul>
 								</div>
@@ -130,7 +125,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 
 								<ul class="cat-list">
 									<!-- <li><a class="justify-content-between d-flex text_active" href="user_profile.html"><p style="font-size: 20px;"><i class="fa fa-user-o pr-2"></i>  Check Disease</p></a></li> -->
-									<li><a class="justify-content-between d-flex" href="#"><p><i class="fa fa-file-word-o pr-2"></i>  History</p></a></li>
+									<li><a class="justify-content-between d-flex" href="{% url 'doc_history' %}"><p><i class="fa fa-file-word-o pr-2"></i>  History</p></a></li>
 									</ul>
 							</div>
 
