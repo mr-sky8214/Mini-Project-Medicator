@@ -87,7 +87,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 									</ul>
 									<ul class="notification_icons">
 										<li>
-											<a href="#"><i class="fa fa-bell-o"></i><span class="number" id="note"></span></a>
+											<a href="{% url 'pat_history' %}"><i class="fa fa-bell-o"></i><span class="number" id="note"></span></a>
 											<ul class="profile">
 												<li>
 													<span id="notetext"></span>
@@ -148,7 +148,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 								
 								<ul class="cat-list">
 									<!-- <li><a class="justify-content-between d-flex text_active" href="user_profile.html"><p style="font-size: 20px;"><i class="fa fa-user-o pr-2"></i>  Check Disease</p></a></li> -->
-									<li><a class="justify-content-between d-flex" href="upload_items.html"><p><i class="fa fa-file-word-o pr-2"></i>  History</p></a></li>
+									<li><a class="justify-content-between d-flex" href="{% url 'pat_history' %}"><p><i class="fa fa-file-word-o pr-2"></i>  History</p></a></li>
 									</ul>
 							</div>							
 
@@ -185,6 +185,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 										<div class="col-md-6 col-sm-12">
 											<div class="submit-field">
 												<h4>Date of Birth: {{dob}}</h4>
+												
 												<!-- <input class="form-control" type="text" placeholder="Account Name"> -->
 											</div>
 										</div>
@@ -293,7 +294,9 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			<script src="{% static 'patient/js/jquery.nice-select.min.js' %}"></script>			
 			<script src="{% static 'patient/js/parallax.min.js' %}"></script>		
 			<script src="{% static 'patient/js/mail-script.js' %}"></script>	
-			<script src="{% static 'patient/js/main.js' %}"></script>	
+			<script src="{% static 'patient/js/main.js' %}"></script>
+			<script src="{% static 'push.min.js' %}"></script>
+			<script src="{% static 'serviceWorker.min.js' %}"></script>	
 			<script>
 				var str1 = '{{note}}';
 				var str2 = 'pending';
@@ -311,6 +314,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 					document.getElementById("msg").textContent = '1';
 					document.getElementById("text").textContent = "Your request has been "+str1+"ed";
 					document.getElementById("link").style.visibility = "hidden";
+					
 					// document.getElementById("msg").innerHTML="<ul><li> Your request has been "+str1+"ed <li><ul>";
 				}
 				else if(str1 == 'accept')

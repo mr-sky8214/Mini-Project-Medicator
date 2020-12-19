@@ -15,10 +15,19 @@ from sklearn.ensemble import RandomForestClassifier
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.mail import send_mail
 from django.core.mail.backends import smtp
+import datetime
+import pytz
 import pandas as pd
 import numpy as np
 import random
 import pyrebase
+
+def get_time():
+    IST = pytz.timezone('Asia/Kolkata')
+    curr_time = datetime.datetime.now(IST)
+    curr_time = str(curr_time.day) + str(curr_time.month) + str(curr_time.year) + str(curr_time.hour) + str(
+        curr_time.minute) + str(curr_time.second)
+    return curr_time
 
 
 Symptoms = ['itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills',
@@ -174,6 +183,7 @@ def sign_in_doctor(request):
 
 
 def user_profile_patient(request):
+
     email = request.POST.get("email")
     passw = request.POST.get("pass")
     if email is not None:
@@ -208,6 +218,7 @@ def user_profile_patient(request):
         # name = fname + " " + lname
         params = {"email":email,"fname":fname,"lname":lname,"email":email,"dob":dob,"phone":phone,"note":note}
         # print(data)
+
         return  render(request,"patient/user_profile.html",params)
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
@@ -578,6 +589,34 @@ def consult_doctor(request):
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
 
+def pat_history(request):
+    try:
+        idtoken = request.session['uid']
+        a = authen.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
+        consult_history = database.child("users").child("patient").child(a).child("consult_history").get().val()
+
+        li = []
+        if consult_history is not None:
+            print("not none")
+            print(consult_history)
+            for i in consult_history:
+                his = {}
+                his['docname'] = database.child("users").child("doctor").child(i["docuid"]).child("details").child("fnmae").get().val()
+                his['symptoms'] = i["pat_his"]["symptoms"]
+                his['status'] = i['status']
+                li.append(his)
+
+        params = {}
+        params["fname"]= fname
+        print("li",li)
+        params['li'] = li
+        return  render(request,"patient/pat_history.html",params)
+    except KeyError:
+        return render(request, "patient/signin.html", {"mess": 'Session ended'})
 
 def diseasepred(request):
 

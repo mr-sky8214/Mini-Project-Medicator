@@ -1,5 +1,12 @@
 {% load static %}
+{% if note == 'pending' %}
+<script>
+	document.getElementById("note").textContent = '1';
+	document.getElementById("msg").textContent = '0';
+	console.log("status accept");
+</script>
 
+{% endif %}
 	
 	<!DOCTYPE html>
 	<html lang="en">
@@ -31,8 +38,7 @@
 			<link rel="stylesheet" href="{% static 'patient/css/animate.min.css' %}">
 			<link rel="stylesheet" href="{% static 'patient/css/owl.carousel.css' %}">
 			<link rel="stylesheet" href="{% static 'patient/css/main.css' %}">
-            <link rel="stylesheet" href="{% static 'patient/css/body1.css' %}">
-        </head>
+		</head>
 		<style>
 			body{
 				background: #abbaab;  /* fallback for old browsers */
@@ -115,97 +121,44 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			  </header><!-- #header -->
 
 
-                        <!--Body starts here  -->
-                        <div class="bg-image"></div>
-<div class="bg-text">
-  <div class="main my-2 mx-5 ">
-    <h1>Medictor</h1>
+			<!-- start banner Area -->
 
-    <form method="post" action="{% url 'diseasepred' %}">
-      <div class="shadow">
-        <label for="s1">Symptom 1:</label>
-        <input list="browsers1" name="s1" id="s1" required>
+			<!-- End banner Area -->	
+			
+			<!-- Start post Area -->
+			<section class="post-area section-gap">
+				<div class="container">
+					<table>
+                        <tr>
+                            <th>Doctor name</th>
+                            <th>Symptoms</th>
+                            <th>Status</th>
+                        </tr>
+                        {% for i in li%}
+                            <tr>
+                                <td>{{i.docname}}</td>
+                                <td>
+                                <ul>
+                                    {% for z in i.symptoms %}
+                                        <li>{{z}}</li>
+                                    {% endfor %}
+                                </ul>
+                                </td>
+                                <td>{{i.status}}</td>
 
-        <datalist id="browsers1">
-          {% for i in symptoms %}
-          <option value="{{i}}">
-            {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+				</div>	
+			</section>
+			<!-- End post Area -->
 
-        </datalist>
-      </div>
-
-
-      <div class="shadow">
-        <label for="s2">Symptom 2:</label>
-        <input list="browsers2" name="s2" id="s2" required>
-
-        <datalist id="browsers2">
-          {% for i in symptoms %}
-          <option value="{{i}}">
-            {% endfor %}
-
-        </datalist>
-      </div>
-
-      <div class="shadow">
-        <label for="s3">Symptom 3:</label>
-        <input list="browsers3" name="s3" id="s3">
-
-        <datalist id="browsers3">
-          {% for i in symptoms %}
-          <option value="{{i}}">
-            {% endfor %}
-
-        </datalist>
-      </div>
-
-
-
-      <div class="shadow">
-        <label for="s4">Symptom 4:</label>
-        <input list="browsers4" name="s4" id="s4">
-
-        <datalist id="browsers4">
-          {% for i in symptoms %}
-          <option value="{{i}}">
-            {% endfor %}
-
-        </datalist>
-      </div>
-
-
-
-      <div class="shadow ">
-        <label for="s5">Symptom 5:</label>
-        <input list="browsers5" name="s5" id="s5">
-
-        <datalist id="browsers5">
-          {% for i in symptoms %}
-          <option value="{{i}}">
-            {% endfor %}
-
-        </datalist>
-      </div>
-
-
-      <br>
-      <div class="container-login100-form-btn p-t-25">
-        <button class="login100-form-btn" type="submit">
-            Predict disease
-        </button>
-    </div>
-      <!-- <button type="submit">Submit</button> -->
-      {% csrf_token %}
-    </form>
-
-
-
-  </div>
-
-</div>
-
+			<!-- start Subscribe Area -->
             
-                        <!-- Body ends -->
+            <!-- End Subscribe Area --> 
+
+			<!-- start footer Area -->		
+			
 			<div class="copyright1">
 				<div class="container">
 					<div class="row"> 
@@ -235,6 +188,8 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			<script src="{% static 'patient/js/parallax.min.js' %}"></script>		
 			<script src="{% static 'patient/js/mail-script.js' %}"></script>	
 			<script src="{% static 'patient/js/main.js' %}"></script>
+			<script src="{% static 'push.min.js' %}"></script>
+			<script src="{% static 'serviceWorker.min.js' %}"></script>	
 			<script>
 				var str1 = '{{note}}';
 				var str2 = 'pending';
@@ -251,6 +206,8 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 					document.getElementById("notetext").textContent = "No activity";
 					document.getElementById("msg").textContent = '1';
 					document.getElementById("text").textContent = "Your request has been "+str1+"ed";
+					document.getElementById("link").style.visibility = "hidden";
+					
 					// document.getElementById("msg").innerHTML="<ul><li> Your request has been "+str1+"ed <li><ul>";
 				}
 				else if(str1 == 'accept')
@@ -264,7 +221,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 					// document.getElementById("msg").innerHTML="<ul><li> Your request has been "+str1+"ed <li><ul>";
 				}
 				
-			</script>	
+			</script>
 		</body>
 	</html>
 
