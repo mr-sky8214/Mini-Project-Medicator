@@ -589,6 +589,14 @@ def consult_doctor(request):
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
 
+
+def Sort(sub_li,c):
+    # reverse = None (Sorts in Ascending order)
+    # key is set to sort using second element of
+    # sublist lambda has been used
+    sub_li.sort(key=lambda x: x[c])
+    return sub_li
+
 def pat_history(request):
     try:
         idtoken = request.session['uid']
@@ -608,11 +616,13 @@ def pat_history(request):
                 his['docname'] = database.child("users").child("doctor").child(i["docuid"]).child("details").child("fnmae").get().val()
                 his['symptoms'] = i["pat_his"]["symptoms"]
                 his['status'] = i['status']
+                his['docuid'] = i['docuid']
                 li.append(his)
 
         params = {}
         params["fname"]= fname
         print("li",li)
+        Sort(li,'status')
         params['li'] = li
         return  render(request,"patient/pat_history.html",params)
     except KeyError:
@@ -647,6 +657,52 @@ def doc_history(request):
         return  render(request,"doctor/doc_history.html",params)
     except KeyError:
         return render(request, "doctor/signin.html", {"mess": 'Session ended'})
+
+def chat_with_patient(request):
+    try:
+        idtoken = request.session['uid']
+        a = authen.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        fname = database.child("users").child("doctor").child(a).child("details").child("fnmae").get().val()
+        patuid = request.POST.get("patuid")
+        rname = database.child("users").child("patient").child(patuid).child("details").child("fnmae").get().val()
+
+
+
+        params = {}
+        params["fname"]= fname
+        params['receiver'] = patuid
+        params['sender'] = a
+        params['rname'] = rname
+
+        return  render(request,"chat/chat.html",params)
+    except KeyError:
+        return render(request, "doctor/signin.html", {"mess": 'Session ended'})
+
+def chat_with_doctor(request):
+    try:
+        idtoken = request.session['uid']
+        a = authen.get_account_info(idtoken)
+        a = a['users']
+        a = a[0]
+        a = a['localId']
+        fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
+        docuid = request.POST.get("docuid")
+        rname = database.child("users").child("doctor").child(docuid).child("details").child("fnmae").get().val()
+
+
+        params = {}
+        params["fname"]= fname
+        params['receiver'] = docuid
+        params['sender'] = a
+        params['rname'] = rname
+
+        return  render(request,"chat/chat.html",params)
+    except KeyError:
+        return render(request, "patient/signin.html", {"mess": 'Session ended'})
+
 
 def diseasepred(request):
 

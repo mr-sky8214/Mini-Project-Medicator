@@ -132,7 +132,8 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
                         <tr>
                             <th>Doctor name</th>
                             <th>Symptoms</th>
-                            <th>Status</th>
+							<th>Status</th>
+							<th>Chat</th>
                         </tr>
                         {% for i in li%}
                             <tr>
@@ -144,7 +145,17 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
                                     {% endfor %}
                                 </ul>
                                 </td>
-                                <td>{{i.status}}</td>
+								<td>{{i.status}}</td>
+								{% if i.status == 'accept' %}
+								<td>
+									<form action="{% url 'chat_with_doctor' %}" method="POST">
+										{% csrf_token %}
+										<button type="submit" value="{{i.docuid}}" name="docuid">Chat with doctor</button>
+									</form>
+								</td>
+								{% else %}
+									<td></td>
+								{% endif %}
 
                             </tr>
                         {% endfor %}
