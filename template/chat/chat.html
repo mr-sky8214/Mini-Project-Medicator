@@ -168,9 +168,9 @@ https://firebase.google.com/docs/web/setup#config-web-app -->
             <input type="button" value="Consulted" class="btn btn-danger mb-2">
         </div>
         <div style="width: 69%;float: right;" id="meet">
-            <!-- <iframe src="https://meet.jit.si/sky8214" height="550px" width="100%"></iframe> -->
             <script src='https://meet.jit.si/external_api.js'></script>
-        </div>
+       </div>
+        
     
 </div>
 
@@ -186,7 +186,13 @@ const options = {
     roomName: 'medicator{{dob}}',
     // width: 700,
     height: 550,
-    parentNode: document.querySelector('#meet')
+    
+    devices: {
+        audioInput: '<deviceLabel>',
+        audioOutput: '<deviceLabel>',
+        videoInput: '<deviceLabel>'
+    },
+    parentNode: document.querySelector('#meet'),
 };
 const api = new JitsiMeetExternalAPI(domain, options);
 </script>
