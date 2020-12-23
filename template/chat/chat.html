@@ -214,19 +214,33 @@ const api = new JitsiMeetExternalAPI(domain, options);
 			<script src="{% static 'patient/js/main.js' %}"></script>
 			
 <script>
-    if(localStorage.getItem('recieverID') == null){
-        localStorage.setItem('recieverID','{{receiver}}')
-    }
-    if(localStorage.getItem('Current_userID') == null){
-        localStorage.setItem('Current_userID','{{sender}}')
-    }
-    localStorage.setItem('recieverID','{{receiver}}');
-    localStorage.setItem('Current_userID','{{sender}}');
+    // if(localStorage.getItem('recieverID') == null){
+    //     localStorage.setItem('recieverID','{{receiver}}')
+    // }
+    // if(localStorage.getItem('Current_userID') == null){
+    //     localStorage.setItem('Current_userID','{{sender}}')
+    // }
+    window.localStorage.setItem('recieverID','{{receiver}}');
+    window.localStorage.setItem('Current_userID','{{sender}}');
+    if( window.localStorage )
+  {
+    if( !localStorage.getItem('firstLoad') )
+    {
+      localStorage['firstLoad'] = true;
+      window.location.reload();
+    }  
+    else
+      localStorage.removeItem('firstLoad');
+  }
 
     function videoChat()
     {
         document.getElementById("vc").style.display = "block";
     }
+
+    navigator.getUserMedia = navigator.getUserMedia ||
+                         navigator.webkitGetUserMedia ||
+                         navigator.mozGetUserMedia;
 
 </script>
 </html>
