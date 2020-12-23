@@ -132,28 +132,64 @@ https://firebase.google.com/docs/web/setup#config-web-app -->
       </div>
 
     </header>
-    <section class="post-area section-gap">
-        <div class="container">
+    <section class="post-area section-gap" style="width: 98%;">
+        <!-- <div class="container" style="width: 100%;"> -->
 
         
     
-    <div style="border: 2px solid black; width: 400px; margin-top: 10px; border-radius: 5px;">
+    <div style="border: 2px solid black; width: 30%; margin-top: 10px; border-radius: 5px;display: block;float: left;margin-left: 2%;">
             <div style="height: 40px; background-color: #6666FF;">
                 <h3 id="recieverUser" style="color: white; margin-left: 5px">@{{rname}}</h3>
             </div>
-        <div class="container" id="mesages"  >
+        <div class="container" id="mesages"  style="width: 100%;">
             
         </div>
         
                 <input type="text" id="textMessage" placeholder="Text">
                 <input type="button" id="sendMessage" value="Send" class="btn btn-primary mb-2">
-       
+                <input type="button" id="VideoCall" value="Video Call" class="btn btn-primary mb-2" onclick="videoChat()">
 
     </div>
+
+    <div style="border: 2px solid black; width: 66%; margin-top: 10px; border-radius: 5px;float: right;height:590px;display: none;" id="vc">
+        <div style="height: 40px; background-color: #6666FF;">
+            <h3 id="recieverUser" style="color: white; margin-left: 5px">Consultation</h3>
+        </div>
+        <div style="width: 29%;height: 550px;float: left;text-align: center;">
+            
+            <h4>Symptoms: </h4>
+            
+            {% for i in symptoms %}
+                <li>{{i}}</li>
+            {% endfor %}
+            <br>
+            <h4>Predicted Disease:</h4><p> {{pd}}</p><br>
+            <h4>Confidence Score:</h4><p> {{cs}}</p><br>
+            <input type="button" value="Consulted" class="btn btn-danger mb-2">
+        </div>
+        <div style="width: 69%;float: right;" id="meet">
+            <!-- <iframe src="https://meet.jit.si/sky8214" height="550px" width="100%"></iframe> -->
+            <script src='https://meet.jit.si/external_api.js'></script>
+        </div>
+    
 </div>
+
+
+    
+<!-- </div> -->
 </section>
 
 </body>
+<script>
+    const domain = 'meet.jit.si';
+const options = {
+    roomName: 'medicator{{dob}}',
+    // width: 700,
+    height: 550,
+    parentNode: document.querySelector('#meet')
+};
+const api = new JitsiMeetExternalAPI(domain, options);
+</script>
 <script src="{% static 'chat/chat.js' %}"></script>
 <script src="{% static 'patient/js/vendor/jquery-2.2.4.min.js' %}"></script>
 			<script src="{% static 'patient/https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' %}" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -180,5 +216,11 @@ https://firebase.google.com/docs/web/setup#config-web-app -->
     }
     localStorage.setItem('recieverID','{{receiver}}');
     localStorage.setItem('Current_userID','{{sender}}');
+
+    function videoChat()
+    {
+        document.getElementById("vc").style.display = "block";
+    }
+
 </script>
 </html>

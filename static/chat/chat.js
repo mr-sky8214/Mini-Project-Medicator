@@ -106,7 +106,7 @@ database.child(`msg/${currentuser}/${recieverId}/Messages`).on(`child_added`, me
 
     }
     if (message.senderIs === `false`) {
-      mess.style = `color: black; background-color: #DCDAF2; border-radius: 5px;  width: 200px; font-family: impect;`
+      mess.style = `color: black; background-color: #DCDAF2; border-radius: 5px;  width: 100%; font-family: impect;`
     }
   })
 

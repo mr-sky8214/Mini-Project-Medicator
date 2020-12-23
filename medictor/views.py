@@ -668,7 +668,15 @@ def chat_with_patient(request):
         fname = database.child("users").child("doctor").child(a).child("details").child("fnmae").get().val()
         patuid = request.POST.get("patuid")
         rname = database.child("users").child("patient").child(patuid).child("details").child("fnmae").get().val()
-
+        consult_history = database.child("users").child("patient").child(patuid).child("consult_history").get().val()
+        # print(consult_history)
+        pathis = {}
+        if consult_history is not None:
+            for i in consult_history:
+                if i['docuid'] == a:
+                    pathis = i
+                    break
+        pathis = pathis['pat_his']
 
 
         params = {}
@@ -676,7 +684,12 @@ def chat_with_patient(request):
         params['receiver'] = patuid
         params['sender'] = a
         params['rname'] = rname
-
+        params['symptoms'] = pathis['symptoms']
+        params['cs'] = pathis['conf_score']
+        params['pd'] = pathis['pred_dis']
+        params['dob'] = database.child("users").child("patient").child(patuid).child("details").child("dob").get().val()
+        params['ispat'] = "no"
+        params['isdoc'] = "yes"
         return  render(request,"chat/chat.html",params)
     except KeyError:
         return render(request, "doctor/signin.html", {"mess": 'Session ended'})
@@ -691,14 +704,27 @@ def chat_with_doctor(request):
         fname = database.child("users").child("patient").child(a).child("details").child("fnmae").get().val()
         docuid = request.POST.get("docuid")
         rname = database.child("users").child("doctor").child(docuid).child("details").child("fnmae").get().val()
-
+        consult_history = database.child("users").child("patient").child(a).child("consult_history").get().val()
+        # print(consult_history)
+        pathis={}
+        if consult_history is not None:
+            for i in consult_history:
+                if i['docuid'] == docuid:
+                    pathis = i
+                    break
+        pathis = pathis['pat_his']
 
         params = {}
         params["fname"]= fname
         params['receiver'] = docuid
         params['sender'] = a
         params['rname'] = rname
-
+        params['symptoms'] = pathis['symptoms']
+        params['cs'] = pathis['conf_score']
+        params['pd'] = pathis['pred_dis']
+        params['dob'] = database.child("users").child("patient").child(a).child("details").child("dob").get().val()
+        params['ispat'] = "yes"
+        params['isdoc'] = "no"
         return  render(request,"chat/chat.html",params)
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
