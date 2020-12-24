@@ -552,7 +552,8 @@ def req_appoint(request):
         params["docuid"] = docuid
         params["patuid"] = patuid
         params['note'] = note
-        return render(request,"patient/req_appoint.html",params)
+        params['mess'] = "Appointment submitted successfully"
+        return render(request,"patient/user_profile.html",params)
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
 

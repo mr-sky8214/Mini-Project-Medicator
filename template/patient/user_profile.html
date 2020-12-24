@@ -7,6 +7,14 @@
 </script>
 
 {% endif %}
+{% if mess %}
+<script>
+	console.log('{{mess}}')
+	// var s = '{{mess}}'
+	// document.getElementById("mess").textContent = s;
+	alert('{{mess}}');
+</script>
+{% endif %}
 	
 	<!DOCTYPE html>
 	<html lang="en">
@@ -24,7 +32,7 @@
 		<!-- meta character set -->
 		<meta charset="UTF-8">
 		<!-- Site Title -->
-		<title>User Profile - Exponus Buy & Sell Market Place</title>
+		<title>Medicator - Online disease pediction and doctor consultation</title><link rel="shortcut icon" href="{% static 'home/img/logo2.png' %}" type="image/x-icon">
 
 		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
 			<!--
@@ -95,7 +103,7 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 											</ul>
 										</li>
 										<li>
-											<a href="#"><i class="fa fa-envelope-o"></i><span class="number" id="msg"></span></a>
+											<a href="#"><i class="fa fa-envelope-o"></i></span></a>
 											<!-- <ul class="profile">
 												<li>
 													<span id="text"></span>
@@ -128,6 +136,8 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			<!-- Start post Area -->
 			<section class="post-area section-gap">
 				<div class="container">
+					<div style="color: red;"><span id="mess"></span></div>
+
 					<div class="row justify-content-center d-flex">
 						<div class="col-lg-3 sidebar">
 							<div class="single-slidebar-profile">
@@ -297,7 +307,9 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			<script src="{% static 'patient/js/main.js' %}"></script>
 			<script src="{% static 'push.min.js' %}"></script>
 			<script src="{% static 'serviceWorker.min.js' %}"></script>	
-			
+			<script>
+				localStorage.clear();
+			</script>
 		</body>
 	</html>
 

@@ -20,7 +20,7 @@
     <!-- meta character set -->
     <meta charset="UTF-8" />
     <!-- Site Title -->
-    <title>User Profile - Exponus Buy & Sell Market Place</title>
+    <title>Medicator - Online disease pediction and doctor consultation</title><link rel="shortcut icon" href="{% static 'home/img/logo2.png' %}" type="image/x-icon">
 
     <link
       href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700"
@@ -111,15 +111,8 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="#"><i class="fa fa-envelope-o"></i><span class="number" id="msg"></span></a>
-                    <ul class="profile">
-                      <li>
-                        <span id="text"></span>
-                      </li>
-                      <li>
-                        <a href="#" id="link" target="_blank">Click here to meet doctor</a>
-                      </li>
-                    </ul>
+                    <a href="#"><i class="fa fa-envelope-o"></i></span></a>
+                    
                   </li>
                   <!-- <li>
 											<a href="#">
@@ -201,17 +194,20 @@
         document.getElementById("text").textContent = "Your request has been "+str1+"ed";
         // document.getElementById("msg").innerHTML="<ul><li> Your request has been "+str1+"ed <li><ul>";
       }
-      else if(str1 == 'accept')
-      {
-        document.getElementById("note").textContent = '0';
-        document.getElementById("notetext").textContent = "No activity";
-        document.getElementById("msg").textContent = '1';
-        document.getElementById("text").textContent = "Your request has been "+str1+"ed";
-        document.getElementById("link").href = "https://meet.jit.si/medicator{{dob}}"
+      // else if(str1 == 'accept')
+      // {
+      //   document.getElementById("note").textContent = '0';
+      //   document.getElementById("notetext").textContent = "No activity";
+      //   document.getElementById("msg").textContent = '1';
+      //   document.getElementById("text").textContent = "Your request has been "+str1+"ed";
+      //   document.getElementById("link").href = "https://meet.jit.si/medicator{{dob}}"
         
-        // document.getElementById("msg").innerHTML="<ul><li> Your request has been "+str1+"ed <li><ul>";
-      }
+      //   // document.getElementById("msg").innerHTML="<ul><li> Your request has been "+str1+"ed <li><ul>";
+      // }
       
+    </script>
+    <script>
+      localStorage.clear();
     </script>
   </body>
 </html>
