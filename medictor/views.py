@@ -553,6 +553,17 @@ def req_appoint(request):
         params["patuid"] = patuid
         params['note'] = note
         params['mess'] = "Appointment submitted successfully"
+        lname = database.child("users").child("patient").child(a).child("details").child("lname").get().val()
+        email = database.child("users").child("patient").child(a).child("details").child("email").get().val()
+        dob = database.child("users").child("patient").child(a).child("details").child("dob").get().val()
+        phone = database.child("users").child("patient").child(a).child("details").child("phone").get().val()
+        note = database.child("users").child("patient").child(a).child("notification").child("status").get().val()
+
+        # print(last_login)
+        # name = fname + " " + lname
+        params = {"email": email, "fname": fname, "lname": lname, "email": email, "dob": dob, "phone": phone,
+                  "note": note,"mess":"Appointment submitted successfully"}
+
         return render(request,"patient/user_profile.html",params)
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
