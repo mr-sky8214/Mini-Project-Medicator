@@ -39,4 +39,5 @@ urlpatterns = [
     path('doc_history/',views.doc_history,name='doc_history'),
     path('chat_with_patient/',views.chat_with_patient,name='chat_with_patient'),
     path('chat_with_doctor/',views.chat_with_doctor,name='chat_with_doctor'),
+    path('feedback/',views.feedback,name='feedback'),
 ]

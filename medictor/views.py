@@ -1179,3 +1179,15 @@ def diseasepred(request):
         return render(request, 'patient/diseasepred.html', params)
     except KeyError:
         return render(request, "patient/signin.html", {"mess": 'Session ended'})
+
+
+
+def feedback(request):
+    name = request.POST.get("name")
+    email = request.POST.get("email")
+    phone = request.POST.get("phone")
+    msg = request.POST.get("message")
+    dict = {'name':name,"email":email,"phone":phone,"msg":msg}
+    database.child("feedback").push(dict)
+    params = {"mess":"Thank you for your precious feedback"}
+    return render(request,"home/index.html",params)

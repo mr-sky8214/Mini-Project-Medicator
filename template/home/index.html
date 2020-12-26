@@ -1,4 +1,10 @@
 {% load static %}
+{% if mess %}
+<script>
+  alert('{{mess}}');
+</script>
+{% endif %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,6 +35,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   </head>
   <body>
+    <div ><span id="msg"></span></div>
   	<!-- Header Section Start -->
     <header id="hero-area">    
       <nav class="navbar navbar-expand-lg navbar-light fixed-top scrolling-navba bg-white" id="white-bg">
@@ -268,8 +275,8 @@
     <section id="counter" class="section counters">
       <div class="overlay"></div>
       <div class="container">
-        <div class="row">
-            <div class="m col-12 col-sm-6 col-md-3 col-lg-3 text-center">
+        <div class="row" style="float:center">
+            <!-- <div class="m col-12 col-sm-6 col-md-3 col-lg-3 text-center">
               <div class="wow fadeInUp" data-wow-delay=".2s">
                 <div class="facts-item">
                   <div class="fact-count">
@@ -279,7 +286,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="m col-12 col-sm-6 col-md-3 col-lg-3 text-center">
               <div class="wow fadeInUp" data-wow-delay=".4s">
                 <div class="facts-item">
@@ -323,24 +330,25 @@
                 <div class="col-sm-12 col-md-4">
                     <!-- start contact form -->
                     <div class="contact-form home-contact">
-                        <form action="#">
+                        <form action="{% url 'feedback' %}" method="POST">
+                          {% csrf_token %}
                             <div class="single-input">
-                                <input type="text" class="form-control" placeholder="Name">
+                                <input type="text" name="name" class="form-control" placeholder="Name" required>
                             </div>
 
                             <div class="single-input">
-                                <input type="text" class="form-control" placeholder="Email">
+                                <input type="email" name="email" class="form-control" placeholder="Email" required>
                             </div>
 
                             <div class="single-input">
-                                <input type="text" class="form-control" placeholder="Phone">
+                                <input type="tel" class="form-control" placeholder="Phone" name="phone">
                             </div>
 
                             <div class="single-input">
-                                <textarea name="Message" cols="30" rows="6" class="form-control" placeholder="Message"></textarea>
+                                <textarea name="Message" cols="30" rows="6" class="form-control" placeholder="Message" required></textarea>
                             </div>
 
-                            <button class="welcom-btn">send now</button>
+                            <button class="welcom-btn" type="submit">send now</button>
                         </form>
                     </div><!-- end contact form -->
                 </div>
@@ -413,9 +421,9 @@
                <div class="widget">
 			         <h3 class="block-title"><img class="mr-2" src="{% static 'home/img/logo.png' %}" alt="logo">Medicator</h3>
                 <ul class="menu">
-                  <li><i class="icon fa fa-map-marker"></i>New York, NY 11237, <br> USA(0080) 8928-5557-234</li>
-                  <li><i class="icon fa fa-mobile"> </i>Office N.Y. (0080) 8567-565 <br> office RED H. (0080) 8567-565</li>
-                  <li><i class="icon fa fa-envelope"></i>yourname@example.com</li>                
+                  <li><i class="icon fa fa-map-marker"></i>Walchand College Of <br> Engineering</li>
+                  <li><i class="icon fa fa-mobile"> </i>Sangli <br> </li>
+                  <li><i class="icon fa fa-envelope"></i>medicatorsv@gmail.com</li>                
                 </ul>
               </div>
             </div>
@@ -426,7 +434,7 @@
                   <li><a href="#">About Us</a></li>
                   <li><a href="#">Services</a></li>
                   <li><a href="#">Works</a></li>                
-                  <li><a href="#">Pricing</a></li>  
+                   
                   <li><a href="#">Contact</a></li>
                 </ul>
               </div>
@@ -435,11 +443,11 @@
               <div class="widget">
                 <h3 class="block-title">Services</h3>
                 <ul class="menu">
-                  <li><a href="#">Web Design</a></li>
-                  <li><a href="#">Graphics Design</a></li>
-                  <li><a href="#">Branding</a></li>
+                  <li><a href="#">Disease Prediction</a></li>
+                  <li><a href="#">Online Doctor's consultation</a></li>
+                  <!-- <li><a href="#">Branding</a></li>
                   <li><a href="#">UX Consulting</a></li>
-                  <li><a href="#">Mobile Apps</a></li>
+                  <li><a href="#">Mobile Apps</a></li> -->
                 </ul>
               </div>
             </div>
