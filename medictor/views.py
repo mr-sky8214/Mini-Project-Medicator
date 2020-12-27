@@ -83,6 +83,8 @@ firebase = pyrebase.initialize_app(config)
 authen = firebase.auth()
 database = firebase.database()
 
+
+
 def home(request):
 
     l={"symptoms":pz,"length":len(pz)}
@@ -218,6 +220,17 @@ def user_profile_patient(request):
         # name = fname + " " + lname
         params = {"email":email,"fname":fname,"lname":lname,"email":email,"dob":dob,"phone":phone,"note":note}
         # print(data)
+        rid = request.POST.get('rid')
+        if rid is not None:
+            li = database.child("users").child("patient").child(a).child('consult_history').get().val()
+            if li is not None:
+                for i in range(len(li)):
+                    if li[i]['docuid'] == rid:
+                        li[i]['status'] = 'consulted'
+                        li.pop(i)
+                        break
+                database.child("users").child("patient").child(a).child('consult_history').set(li)
+                params.update({'mess':'successful consultation'})
 
         return  render(request,"patient/user_profile.html",params)
     except KeyError:
@@ -265,6 +278,22 @@ def user_profile_doctor(request):
             cnt = cnt + len(database.child("users").child("doctor").child(a).child("accept").get().val())
 
         params["msg_cnt"] = cnt
+
+        rid = request.POST.get('rid')
+        # print(rid)
+        if rid is not None:
+            li = database.child("users").child("doctor").child(a).child('accept').get().val()
+            # print(li)
+            if li is not None:
+                for i in range(len(li)):
+                    if li[i]['patuid'] == rid:
+                        # print(li[i])
+                        li[i]['status'] = 'consulted'
+                        li.pop(i)
+                        # print(li)
+                        break
+                database.child("users").child("doctor").child(a).child('accept').set(li)
+                params['mess'] = 'successful consultation'
         # print(data)
         return render(request, "doctor/user_profile.html", params)
     except KeyError:

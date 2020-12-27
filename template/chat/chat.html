@@ -165,7 +165,12 @@ https://firebase.google.com/docs/web/setup#config-web-app -->
             <br>
             <h4>Predicted Disease:</h4><p> {{pd}}</p><br>
             <h4>Confidence Score:</h4><p> {{cs}}</p><br>
-            <input type="button" value="Consulted" class="btn btn-danger mb-2">
+            <p style="color: red;font-size: 10px;">Note: After consultation please click below button</p><br>
+            <form method="POST" action="#" id="frm">
+                {% csrf_token %}
+                <button type="submit" name="rid" value="{{receiver}}" class="btn btn-danger mb-2">Consulted</button>
+            </form>
+            
         </div>
         <div style="width: 69%;float: right;" id="meet">
             <script src='https://meet.jit.si/external_api.js'></script>
@@ -237,6 +242,13 @@ const api = new JitsiMeetExternalAPI(domain, options);
     {
         document.getElementById("vc").style.display = "block";
     }
+
+    if('{{ispat}}' == 'yes')
+        document.getElementById('frm').action = "{% url 'user_profile_patient' %}"
+    if('{{isdoc}}' == 'yes')
+        document.getElementById('frm').action = "{% url 'user_profile_doctor' %}"
+    
+
 
     navigator.getUserMedia = navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
