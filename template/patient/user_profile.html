@@ -1,12 +1,13 @@
 {% load static %}
-{% if note == 'pending' %}
+<!-- {% if note == 'pending' %}
 <script>
 	document.getElementById("note").textContent = '1';
 	document.getElementById("msg").textContent = '0';
+	// document.getElementById("notetext").innerHTML ='<ul><li>Your request is pending</li></ul>'
 	console.log("status accept");
 </script>
 
-{% endif %}
+{% endif %} -->
 {% if mess %}
 <script>
 	console.log('{{mess}}')
@@ -95,7 +96,8 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 									</ul>
 									<ul class="notification_icons">
 										<li>
-											<a href="{% url 'pat_history' %}"><i class="fa fa-bell-o"></i><span class="number" id="note"></span></a>
+											<a href="{% url 'pat_history' %}"><i class="fa fa-bell-o"></i><span class="number"
+													id="note"></span></a>
 											<ul class="profile">
 												<li>
 													<span id="notetext"></span>
@@ -309,6 +311,25 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
 			<script src="{% static 'serviceWorker.min.js' %}"></script>	
 			<script>
 				localStorage.clear();
+			</script>
+			<script>
+				var str1 = '{{note}}';
+				var str2 = 'pending';
+				if (str1 == 'pending') {
+					document.getElementById("note").textContent = '1';
+					document.getElementById("notetext").textContent = "Your request is pending";
+					document.getElementById("msg").textContent = '0';
+					document.getElementById("text").textContent = "No activity";
+				}
+				else if (str1 == 'reject') {
+					document.getElementById("note").textContent = '0';
+					document.getElementById("notetext").textContent = "No activity";
+					document.getElementById("msg").textContent = '1';
+					document.getElementById("text").textContent = "Your request has been " + str1 + "ed";
+					document.getElementById("link").style.visibility = "hidden";
+		
+					// document.getElementById("msg").innerHTML="<ul><li> Your request has been "+str1+"ed <li><ul>";
+				}
 			</script>
 		</body>
 	</html>

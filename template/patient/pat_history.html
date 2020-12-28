@@ -201,7 +201,7 @@
 					<td>
 						<form action="{% url 'chat_with_doctor' %}" method="POST">
 							{% csrf_token %}
-							<button type="submit" value="{{i.docuid}}" name="docuid">Chat with doctor</button>
+							<button type="submit" value="{{i.docuid}}" name="docuid" class="btn">Chat with doctor</button>
 						</form>
 					</td>
 					{% else %}
